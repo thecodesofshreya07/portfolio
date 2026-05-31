@@ -25,7 +25,7 @@ const PROJECTS = [
   {
     name: "Itihas",
     subtitle: "Interactive Historical Exploration Platform",
-    tags: ["React.js", "Node.js", "Express.js", "React Leaflet", "OpenRouteService API", "Framer Motion"],
+    tags: ["React.js", "Node.js", "Express.js", "MongoDB", "React Leaflet", "OpenRouteService API", "Framer Motion"],
     desc: "Geospatial platform mapping many ancient locations with dynamic timeline routing and intelligent multi-point historical navigation. Features interactive quizzes, downloadable report summaries, and profile login for persistent memory.",
     stats: ["Many Locations", "Sub-2s Load", "Timeline Routing", "Quiz & Reports"],
     link: "https://github.com/thecodesofshreya07/ITIHAS",
@@ -61,6 +61,16 @@ const PROJECTS = [
     link: "https://github.com/thecodesofshreya07/FlavourHunt",
     live: "https://flavour-hunt-henna.vercel.app/",
     color: "#f59e0b",
+  },
+  {
+    name: "Marvel Universe",
+    subtitle: "Marvel Cinematic Experience · Frontend",
+    tags: ["React.js", "Framer Motion"],
+    desc: "Immersive Marvel-themed frontend experience with cinematic animations, character showcases, and fluid motion design powered by Framer Motion.",
+    stats: ["Cinematic UI", "Framer Motion", "Frontend"],
+    link: "https://github.com/thecodesofshreya07/marvel",
+    live: "https://marvel-black.vercel.app/",
+    color: "#e11d48",
   },
   {
     name: "Artello",
@@ -652,7 +662,7 @@ export default function Portfolio() {
               I am <span style={{ color: T.accent, borderRight: `2px solid ${T.accent}`, paddingRight: 4, fontWeight: 600 }}>{typed}</span>
             </p>
             <p style={{ color: T.textSub, fontSize: "clamp(13px,1.6vw,15px)", maxWidth: 500, margin: "0 auto 36px", lineHeight: 1.85, fontWeight: 300 }}>
-              Final year Computer Engineering student · CGPA 9.4 · I love building things that actually work.
+              Computer Engineering student · CGPA 9.4 · I love building things that actually work.
             </p>
             <div className="hero-btns">
               <button onClick={() => scrollTo("Projects")} style={{ padding: "13px 32px", background: T.btnPrimary, color: T.btnPrimaryColor, border: "none", borderRadius: 8, fontWeight: 600, fontSize: 14, cursor: "pointer", transition: "all 0.2s", boxShadow: dark ? "0 0 24px rgba(124,58,237,0.28)" : "0 4px 16px rgba(30,58,95,0.18)", fontFamily: "'DM Sans',sans-serif" }}
@@ -695,7 +705,7 @@ export default function Portfolio() {
                   I'm a Computer Engineering student with a CGPA of 9.4, and I genuinely enjoy the process of building things — from designing APIs to making a UI feel just right. I've shipped 3+ full-stack apps that are live and actually used.
                 </p>
                 <p style={{ color: T.textSub, lineHeight: 1.9, fontSize: 15, marginBottom: 32, fontWeight: 300 }}>
-                  Outside of code, I've been part of a national-level CSI committee where I got to lead events, handle sponsorships, and work with people from colleges across the country. I'm someone who follows through — whether that's a deadline, a bug at 2am, or a presentation to stakeholders.
+                  Outside of code, I've been part of a national-level CSI committee where I got to lead events, handle sponsorships, and work with people from colleges across the country. I'm someone who follows through — whether that's a deadline, a bug at 2am, or a presentation.
                 </p>
                 <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                   {[

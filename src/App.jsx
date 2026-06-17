@@ -96,7 +96,7 @@ const EXPERIENCE = [
   {
     year: "2024 – Present",
     title: "B.E. Computer Engineering",
-    org: "CGPA 9.4 · Sem 1: 9.37 | Sem 2: 9.25 | Sem 3: 9.59",
+    org: "CGPA 9.5 · Sem 1: 9.37 | Sem 2: 9.25 | Sem 3: 9.59 | Sem 4: 9.83",
     points: [],
   },
 ];
@@ -258,8 +258,8 @@ const LEARNING_TRACKS = [
     icon: "⬡",
     items: [
       { name: "Docker & Containerization", progress: 45, note: "Images, volumes, docker-compose" },
-      { name: "Redis & Caching", progress: 38, note: "Cache strategies, pub/sub, TTL patterns" },
-      { name: "Rate Limiting", progress: 42, note: "Token bucket, sliding window algorithms" },
+      { name: "Redis & Caching", progress: 100, note: "Cache strategies, pub/sub, TTL patterns" },
+      { name: "Rate Limiting", progress: 88, note: "Token bucket, sliding window algorithms" },
     ],
   },
 ];
@@ -662,7 +662,7 @@ export default function Portfolio() {
               I am <span style={{ color: T.accent, borderRight: `2px solid ${T.accent}`, paddingRight: 4, fontWeight: 600 }}>{typed}</span>
             </p>
             <p style={{ color: T.textSub, fontSize: "clamp(13px,1.6vw,15px)", maxWidth: 500, margin: "0 auto 36px", lineHeight: 1.85, fontWeight: 300 }}>
-              Computer Engineering student · CGPA 9.4 · I love building things that actually work.
+              Computer Engineering student · CGPA 9.5 · I love building things that actually work.
             </p>
             <div className="hero-btns">
               <button onClick={() => scrollTo("Projects")} style={{ padding: "13px 32px", background: T.btnPrimary, color: T.btnPrimaryColor, border: "none", borderRadius: 8, fontWeight: 600, fontSize: 14, cursor: "pointer", transition: "all 0.2s", boxShadow: dark ? "0 0 24px rgba(124,58,237,0.28)" : "0 4px 16px rgba(30,58,95,0.18)", fontFamily: "'DM Sans',sans-serif" }}
@@ -726,7 +726,7 @@ export default function Portfolio() {
                 {[
                   { label: "Education", val: "B.E. Computer Engg", sub: "2024–Present" },
                   { label: "Location", val: "Mumbai, India", sub: "Open to remote & on-site" },
-                  { label: "CGPA", val: "9.4", sub: "Cumulative (all semesters)" },
+                  { label: "CGPA", val: "9.5", sub: "Cumulative (all semesters)" },
                   { label: "Goal", val: "Software Developer", sub: "Seeking 2025" },
                 ].map(({ label, val, sub }) => (
                   <div key={label}

@@ -683,7 +683,7 @@ export default function Portfolio() {
               </button>
             </div>
             <div className="hero-stats">
-              {[{ label: "9.4", sub: "CGPA" }, { label: "6+", sub: "Projects" }, { label: "3+", sub: "Live Apps" }].map(({ label, sub }) => (
+              {[{ label: "9.5", sub: "CGPA" }, { label: "6+", sub: "Projects" }, { label: "3+", sub: "Live Apps" }].map(({ label, sub }) => (
                 <div key={sub} style={{ textAlign: "center" }}>
                   <div style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(28px,4vw,38px)", fontWeight: 700, color: T.statVal, letterSpacing: "-0.03em" }}>{label}</div>
                   <div style={{ fontSize: 11, color: T.textMuted, textTransform: "uppercase", letterSpacing: "0.14em", marginTop: 4, fontWeight: 500 }}>{sub}</div>
@@ -702,7 +702,7 @@ export default function Portfolio() {
                 <h2 style={secTitle}>Building things <span style={{ color: T.accent }}>that matter.</span></h2>
                 <div style={dividerBar} />
                 <p style={{ color: T.textSub, lineHeight: 1.9, fontSize: 15, marginBottom: 16, fontWeight: 300 }}>
-                  I'm a Computer Engineering student with a CGPA of 9.4, and I genuinely enjoy the process of building things — from designing APIs to making a UI feel just right. I've shipped 3+ full-stack apps that are live and actually used.
+                  I'm a Computer Engineering student with a CGPA of 9.5, and I genuinely enjoy the process of building things — from designing APIs to making a UI feel just right. I've shipped 3+ full-stack apps that are live and actually used.
                 </p>
                 <p style={{ color: T.textSub, lineHeight: 1.9, fontSize: 15, marginBottom: 32, fontWeight: 300 }}>
                   Outside of code, I've been part of a national-level CSI committee where I got to lead events, handle sponsorships, and work with people from colleges across the country. I'm someone who follows through — whether that's a deadline, a bug at 2am, or a presentation.

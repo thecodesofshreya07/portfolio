@@ -670,7 +670,7 @@ export default function Portfolio() {
                 onMouseLeave={e => { e.target.style.transform = ""; e.target.style.filter = ""; }}>
                 View Projects
               </button>
-              <a href="/ShreyaMishraResume.pdf" download style={{ padding: "12px 32px", background: "transparent", color: T.btnSecColor, border: `1.5px solid ${T.btnSecBorder}`, borderRadius: 8, fontWeight: 600, fontSize: 14, cursor: "pointer", transition: "all 0.2s", fontFamily: "'DM Sans',sans-serif", display: "inline-flex", alignItems: "center", gap: 7, textDecoration: "none" }}
+              <a href="/Shreya_Mishra_Resume.pdf" download style={{ padding: "12px 32px", background: "transparent", color: T.btnSecColor, border: `1.5px solid ${T.btnSecBorder}`, borderRadius: 8, fontWeight: 600, fontSize: 14, cursor: "pointer", transition: "all 0.2s", fontFamily: "'DM Sans',sans-serif", display: "inline-flex", alignItems: "center", gap: 7, textDecoration: "none" }}
                 onMouseEnter={e => { e.currentTarget.style.background = T.pillBg; }}
                 onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>

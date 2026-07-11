@@ -13,10 +13,20 @@ const SKILLS = {
 
 const PROJECTS = [
   {
+    name: "Artello",
+    subtitle: "Creative Collaboration Tool",
+    tags: ["React.js", "Canvas", "Socket.io","Node.js", "MongoDB"],
+    desc: "A real-time multiplayer whiteboard built with React and Socket.io, engineered for smooth collaboration at scale. A two-layer canvas architecture redraws only the active stroke instead of the entire drawing history, keeping boards fluid even as they grow large — paired with stroke-point compression that cuts network traffic by ~80%.",
+    stats: ["Canvas Drawing", "Real-Time", "Creative Tool"],
+    link: "https://github.com/thecodesofshreya07/artello",
+    live: "https://artello.vercel.app/",
+    color: "#ec4899",
+  },
+  {
     name: "Fix It Fast",
     subtitle: "On-Demand Home Services Platform",
     tags: ["React.js", "Node.js", "Express.js", "MongoDB", "JWT Auth"],
-    desc: "Full-stack booking platform across 5+ service categories with 10+ RESTful API endpoints covering JWT auth, service discovery, and real-time booking status. Built 25+ React components with role-based interfaces for users and providers; deployed on Vercel + Render.",
+    desc: "Full-stack booking platform across 15+ service categories with 10+ RESTful API endpoints covering JWT auth, service discovery, and real-time booking status. Built 25+ React components with role-based interfaces for users and providers; deployed on Vercel + Render.",
     stats: ["10+ APIs", "25+ Components", "Role-Based UI"],
     link: "https://github.com/thecodesofshreya07/FixItFast",
     live: "https://fix-it-fast-iota.vercel.app/",
@@ -72,18 +82,19 @@ const PROJECTS = [
     live: "https://marvel-black.vercel.app/",
     color: "#e11d48",
   },
-  {
-    name: "Artello",
-    subtitle: "Creative Portfolio Tool",
-    tags: ["React.js", "Canvas", "Socket.io"],
-    desc: "A creative drawing and portfolio tool built with React, canvas-based interactions, and real-time collaboration via Socket.io.",
-    stats: ["Canvas Drawing", "Real-Time", "Creative Tool"],
-    link: "https://github.com/thecodesofshreya07/artello",
-    color: "#ec4899",
-  },
 ];
 
 const EXPERIENCE = [
+  {
+    year: "June 2026 – Present",
+    title: "Full Stack Development Intern",
+    org: "Cpiombo Servtec Pvt. Ltd. · Hybrid, Mumbai",
+    points: [
+      "Independently work on full-stack development of a B2B Site Operations SaaS platform end-to-end — backend architecture, database design, and frontend — as sole engineer across 4+ core modules.",
+      "Architected a complete Supplier Onboarding system single-handedly, replacing a static UI with a live, database-driven pipeline.",
+      "Diagnosed and resolved multiple critical data-scoping bugs across the existing platform, migrating core query logic to a more reliable approach across 35+ components and eliminating silently dropped multi-batch records.",
+    ],
+  },
   {
     year: "Apr 2025 – Apr 2026",
     title: "Member, National Level Committee",
@@ -248,8 +259,8 @@ const LEARNING_TRACKS = [
     color: "#3178c6",
     icon: "⬡",
     items: [
-      { name: "TypeScript", progress: 52, note: "Type systems, generics, utility types" },
-      { name: "Angular", progress: 34, note: "Components, RxJS, dependency injection" },
+      { name: "TypeScript", progress: 32, note: "Type systems, generics, utility types" },
+      { name: "Angular", progress: 24, note: "Components, RxJS, dependency injection" },
     ],
   },
   {
@@ -258,8 +269,8 @@ const LEARNING_TRACKS = [
     icon: "⬡",
     items: [
       { name: "Docker & Containerization", progress: 45, note: "Images, volumes, docker-compose" },
-      { name: "Redis & Caching", progress: 100, note: "Cache strategies, pub/sub, TTL patterns" },
-      { name: "Rate Limiting", progress: 88, note: "Token bucket, sliding window algorithms" },
+      { name: "Redis & Caching", progress: 100, note: "Cache strategies, TTL patterns" },
+      { name: "Rate Limiting", progress: 88 },
     ],
   },
 ];
@@ -683,7 +694,7 @@ export default function Portfolio() {
               </button>
             </div>
             <div className="hero-stats">
-              {[{ label: "9.5", sub: "CGPA" }, { label: "6+", sub: "Projects" }, { label: "3+", sub: "Live Apps" }].map(({ label, sub }) => (
+              {[{ label: "9.5", sub: "CGPA" }, { label: "8+", sub: "Projects" }, { label: "6+", sub: "Live Apps" }].map(({ label, sub }) => (
                 <div key={sub} style={{ textAlign: "center" }}>
                   <div style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(28px,4vw,38px)", fontWeight: 700, color: T.statVal, letterSpacing: "-0.03em" }}>{label}</div>
                   <div style={{ fontSize: 11, color: T.textMuted, textTransform: "uppercase", letterSpacing: "0.14em", marginTop: 4, fontWeight: 500 }}>{sub}</div>
@@ -702,7 +713,7 @@ export default function Portfolio() {
                 <h2 style={secTitle}>Building things <span style={{ color: T.accent }}>that matter.</span></h2>
                 <div style={dividerBar} />
                 <p style={{ color: T.textSub, lineHeight: 1.9, fontSize: 15, marginBottom: 16, fontWeight: 300 }}>
-                  I'm a Computer Engineering student with a CGPA of 9.5, and I genuinely enjoy the process of building things — from designing APIs to making a UI feel just right. I've shipped 3+ full-stack apps that are live and actually used.
+                  I'm a Computer Engineering student with a CGPA of 9.5, and I genuinely enjoy the process of building things — from designing APIs to making a UI feel just right. I've shipped 4+ full-stack apps that are live and actually used.
                 </p>
                 <p style={{ color: T.textSub, lineHeight: 1.9, fontSize: 15, marginBottom: 32, fontWeight: 300 }}>
                   Outside of code, I've been part of a national-level CSI committee where I got to lead events, handle sponsorships, and work with people from colleges across the country. I'm someone who follows through — whether that's a deadline, a bug at 2am, or a presentation.
@@ -727,7 +738,7 @@ export default function Portfolio() {
                   { label: "Education", val: "B.E. Computer Engg", sub: "2024–Present" },
                   { label: "Location", val: "Mumbai, India", sub: "Open to remote & on-site" },
                   { label: "CGPA", val: "9.5", sub: "Cumulative (all semesters)" },
-                  { label: "Goal", val: "Software Developer", sub: "Seeking 2025" },
+                  { label: "Goal", val: "Software Developer", sub: "Seeking 2026" },
                 ].map(({ label, val, sub }) => (
                   <div key={label}
                     style={{ background: T.bgCard, border: `1px solid ${T.cardBorder}`, borderRadius: 12, padding: "20px 16px", textAlign: "center", transition: "border-color 0.25s" }}

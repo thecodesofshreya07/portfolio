@@ -48,7 +48,7 @@ const PROJECTS = [
     tags: ["React.js", "React Leaflet", "OpenRouteService API"],
     desc: "Campus navigation for IIT Bombay covering 12+ buildings with live route calculation and sub-1.5s query response.",
     stats: ["IIT Bombay", "12+ Buildings", "Sub-1.5s Query", "Live Routes"],
-    link: "https://github.com/thecodesofshreya07/tricoded-webies",
+    link: "https://github.com/thecodesofshreya07/smart-move",
     live: "https://tricoded-webies.vercel.app/",
     color: "#0ea5e9",
   },

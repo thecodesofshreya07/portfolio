@@ -69,7 +69,7 @@ const PROJECTS = [
     desc: "Recipe discovery and food exploration app with rich filtering, search, and category-based browsing across multiple cuisines and meal types.",
     stats: ["Search & Filter", "Category Browse", "Frontend"],
     link: "https://github.com/thecodesofshreya07/FlavourHunt",
-    live: "https://flavour-hunt-henna.vercel.app/",
+    live: "https://thecodesofshreya07.github.io/FlavourHunt/",
     color: "#f59e0b",
   },
   {

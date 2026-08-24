@@ -1379,9 +1379,6 @@ export default function Portfolio() {
             <p style={{ marginBottom: 16 }}>
               I’m currently exploring software development opportunities where I can contribute from day one, solve meaningful problems, and create real value for the team and the product.
             </p>
-            <p style={{ marginBottom: 16 }}>
-              I’m looking to join a collaborative, growth-oriented team where I can apply my technical skills, take ownership of challenging tasks, and continuously learn while delivering high-quality solutions.
-            </p>
             <p>
               If you’re hiring for a software development role, know of an opportunity that could be a good fit, or simply want to connect and exchange ideas, I’d be happy to hear from you. Please feel free to reach out!
             </p>

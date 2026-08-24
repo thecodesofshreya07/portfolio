@@ -749,7 +749,7 @@ export default function Portfolio() {
                   { label: "Education", val: "B.E. Computer Engg", sub: "2024–Present" },
                   { label: "Location", val: "Mumbai, India", sub: "Open to remote & on-site" },
                   { label: "CGPA", val: "9.5", sub: "Cumulative (all semesters)" },
-                  { label: "Goal", val: "Software Developer", sub: "Seeking 2026" },
+                  { label: "Goal", val: "Software Developer" },
                 ].map(({ label, val, sub }) => (
                   <div key={label}
                     style={{ background: T.bgCard, border: `1px solid ${T.cardBorder}`, borderRadius: 12, padding: "20px 16px", textAlign: "center", transition: "border-color 0.25s" }}

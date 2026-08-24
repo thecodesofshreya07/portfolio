@@ -168,23 +168,35 @@ function useTypewriter(words, speed = 80, pause = 1800) {
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    const current = words[wordIdx];
-    const timeout = setTimeout(
-      () => {
-        if (!deleting) {
+    if (!words || words.length === 0) return;
+    const current = words[wordIdx] || "";
+
+    let delay = deleting ? speed / 2 : speed;
+    if (!deleting && charIdx === current.length) {
+      delay = pause;
+    } else if (deleting && charIdx === 0) {
+      delay = 300;
+    }
+
+    const timeout = setTimeout(() => {
+      if (!deleting) {
+        if (charIdx < current.length) {
           setDisplay(current.slice(0, charIdx + 1));
-          if (charIdx + 1 === current.length) setTimeout(() => setDeleting(true), pause);
-          else setCharIdx((c) => c + 1);
+          setCharIdx((c) => c + 1);
         } else {
-          setDisplay(current.slice(0, charIdx - 1));
-          if (charIdx === 0) {
-            setDeleting(false);
-            setWordIdx((w) => (w + 1) % words.length);
-          } else setCharIdx((c) => c - 1);
+          setDeleting(true);
         }
-      },
-      deleting ? speed / 2 : speed
-    );
+      } else {
+        if (charIdx > 0) {
+          setDisplay(current.slice(0, charIdx - 1));
+          setCharIdx((c) => c - 1);
+        } else {
+          setDeleting(false);
+          setWordIdx((w) => (w + 1) % words.length);
+        }
+      }
+    }, delay);
+
     return () => clearTimeout(timeout);
   }, [charIdx, deleting, wordIdx, words, speed, pause]);
 

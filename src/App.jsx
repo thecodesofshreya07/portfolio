@@ -128,8 +128,14 @@ const EXPERIENCE = [
 ];
 
 const ACHIEVEMENTS = [
-  "2nd Place — CODEISSANCE 2026 (24-Hour Hackathon)",
-  "3rd Place — MOSAIC National Level UI/UX Hackathon, RAIT D.Y. Patil"
+  {
+    title: "2nd Place — CODEISSANCE 2026 (24-Hour Hackathon)",
+    images: ["/3.jpeg", "/4.jpeg"],
+  },
+  {
+    title: "3rd Place — MOSAIC National Level UI/UX Hackathon, RAIT D.Y. Patil",
+    images: ["/1.jpeg", "/2.jpeg"],
+  },
 ];
 
 const LEARNING_TRACKS = [
@@ -183,6 +189,257 @@ function useTypewriter(words, speed = 80, pause = 1800) {
   }, [charIdx, deleting, wordIdx, words, speed, pause]);
 
   return display;
+}
+
+// ─── Achievement Card with Photo Slider ───────────────────────────────────────
+function AchievementCard({ item }) {
+  const [currentIdx, setCurrentIdx] = useState(0);
+  const [touchStartX, setTouchStartX] = useState(null);
+
+  const images = item.images || [];
+
+  const nextImage = (e) => {
+    if (e) e.stopPropagation();
+    if (images.length > 0) {
+      setCurrentIdx((prev) => (prev + 1) % images.length);
+    }
+  };
+
+  const prevImage = (e) => {
+    if (e) e.stopPropagation();
+    if (images.length > 0) {
+      setCurrentIdx((prev) => (prev - 1 + images.length) % images.length);
+    }
+  };
+
+  const handleTouchStart = (e) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartX === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX - touchEndX;
+    if (diff > 35) {
+      nextImage();
+    } else if (diff < -35) {
+      prevImage();
+    }
+    setTouchStartX(null);
+  };
+
+  return (
+    <div
+      className="peach-card"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 16,
+        padding: "24px 24px 20px",
+        borderRadius: 20,
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
+        <div
+          style={{
+            width: 8,
+            height: 8,
+            borderRadius: "50%",
+            background: "#ff729f",
+            flexShrink: 0,
+            marginTop: 7,
+            boxShadow: "0 0 10px #ff729f",
+          }}
+        />
+        <p
+          style={{
+            fontSize: 15,
+            color: "#f1f5f9",
+            lineHeight: 1.6,
+            margin: 0,
+            fontWeight: 600,
+            textShadow: "0 1px 6px rgba(0,0,0,0.9)",
+          }}
+        >
+          {item.title}
+        </p>
+      </div>
+
+      {images.length > 0 && (
+        <div
+          onClick={nextImage}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          title="Click to view next photo"
+          style={{
+            position: "relative",
+            width: "100%",
+            height: 240,
+            borderRadius: 14,
+            overflow: "hidden",
+            background: "rgba(3, 13, 27, 0.7)",
+            border: "1px solid rgba(255, 255, 255, 0.16)",
+            cursor: "pointer",
+            userSelect: "none",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <img
+            key={currentIdx}
+            src={images[currentIdx]}
+            alt={`${item.title} photo ${currentIdx + 1}`}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+              transition: "transform 0.3s ease",
+            }}
+          />
+
+          {images.length > 1 && (
+            <>
+              {/* Prev Button */}
+              <button
+                type="button"
+                onClick={prevImage}
+                title="Previous photo"
+                aria-label="Previous photo"
+                style={{
+                  position: "absolute",
+                  left: 8,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  width: 32,
+                  height: 32,
+                  borderRadius: "50%",
+                  background: "rgba(6, 24, 46, 0.8)",
+                  border: "1px solid rgba(255, 255, 255, 0.25)",
+                  color: "#ffffff",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 16,
+                  cursor: "pointer",
+                  backdropFilter: "blur(6px)",
+                  zIndex: 2,
+                  transition: "all 0.2s",
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.background = "#ff729f";
+                  e.currentTarget.style.borderColor = "#ff729f";
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.background = "rgba(6, 24, 46, 0.8)";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.25)";
+                }}
+              >
+                ‹
+              </button>
+
+              {/* Next Button */}
+              <button
+                type="button"
+                onClick={nextImage}
+                title="Next photo"
+                aria-label="Next photo"
+                style={{
+                  position: "absolute",
+                  right: 8,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  width: 32,
+                  height: 32,
+                  borderRadius: "50%",
+                  background: "rgba(6, 24, 46, 0.8)",
+                  border: "1px solid rgba(255, 255, 255, 0.25)",
+                  color: "#ffffff",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 16,
+                  cursor: "pointer",
+                  backdropFilter: "blur(6px)",
+                  zIndex: 2,
+                  transition: "all 0.2s",
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.background = "#ff729f";
+                  e.currentTarget.style.borderColor = "#ff729f";
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.background = "rgba(6, 24, 46, 0.8)";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.25)";
+                }}
+              >
+                ›
+              </button>
+
+              {/* Indicator Dots */}
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: 10,
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  padding: "4px 10px",
+                  borderRadius: 99,
+                  background: "rgba(2, 11, 22, 0.75)",
+                  border: "1px solid rgba(255, 255, 255, 0.18)",
+                  backdropFilter: "blur(6px)",
+                  zIndex: 2,
+                }}
+              >
+                {images.map((_, idx) => (
+                  <div
+                    key={idx}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setCurrentIdx(idx);
+                    }}
+                    style={{
+                      width: currentIdx === idx ? 16 : 6,
+                      height: 6,
+                      borderRadius: 99,
+                      background: currentIdx === idx ? "#ff729f" : "rgba(255, 255, 255, 0.4)",
+                      boxShadow: currentIdx === idx ? "0 0 8px #ff729f" : "none",
+                      transition: "all 0.25s ease",
+                      cursor: "pointer",
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* Tag indicator badge */}
+              <div
+                style={{
+                  position: "absolute",
+                  top: 8,
+                  right: 8,
+                  padding: "3px 8px",
+                  borderRadius: 6,
+                  background: "rgba(2, 11, 22, 0.75)",
+                  border: "1px solid rgba(255, 255, 255, 0.15)",
+                  color: "rgba(255, 255, 255, 0.85)",
+                  fontSize: 10.5,
+                  fontWeight: 600,
+                  backdropFilter: "blur(4px)",
+                  zIndex: 2,
+                  pointerEvents: "none",
+                }}
+              >
+                {currentIdx + 1}/{images.length} • Click to switch
+              </div>
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
 }
 
 // ─── Contact Grid with Copy ───────────────────────────────────────────────────
@@ -1337,21 +1594,8 @@ export default function Portfolio() {
               Honors & Achievements
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 20 }}>
-              {ACHIEVEMENTS.map((a, i) => (
-                <div
-                  key={i}
-                  className="peach-card"
-                  style={{
-                    display: "flex",
-                    alignItems: "flex-start",
-                    gap: 16,
-                    padding: "22px 26px",
-                    borderRadius: 20,
-                  }}
-                >
-                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#ff729f", flexShrink: 0, marginTop: 7, boxShadow: "0 0 10px #ff729f" }} />
-                  <p style={{ fontSize: 14.5, color: "#f1f5f9", lineHeight: 1.75, margin: 0, fontWeight: 500, textShadow: "0 1px 6px rgba(0,0,0,0.9)" }}>{a}</p>
-                </div>
+              {ACHIEVEMENTS.map((item, i) => (
+                <AchievementCard key={i} item={item} />
               ))}
             </div>
           </div>

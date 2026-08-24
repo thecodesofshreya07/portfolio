@@ -1624,7 +1624,9 @@ export default function Portfolio() {
               I’m currently exploring software development opportunities where I can contribute from day one, solve meaningful problems, and create real value for the team and the product.
             </p>
             <p>
-              If you’re hiring for a software development role, know of an opportunity that could be a good fit, or simply want to connect and exchange ideas, I’d be happy to hear from you. Please feel free to reach out!
+              If you are hiring for software development roles or know of a suitable opportunity, I would be glad to connect and explore how I can contribute.
+
+              I welcome professional connections, referrals, and conversations around relevant opportunities. Please feel free to reach out.
             </p>
           </div>
 

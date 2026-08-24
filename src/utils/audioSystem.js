@@ -58,8 +58,9 @@ class OceanicAudioSystem {
     } catch (e) {}
   }
 
-  startBgAudio() {
-    if (this.isExplicitlyMuted) return Promise.resolve(false);
+  startBgAudio(force = false) {
+    if (this.isExplicitlyMuted && !force) return Promise.resolve(false);
+    if (force) this.isExplicitlyMuted = false;
     this.initBgAudio();
     this.initWebAudio();
 
@@ -81,8 +82,8 @@ class OceanicAudioSystem {
           this.isMuted = false;
           return true;
         })
-        .catch((e) => {
-          // Autoplay policy blocked until user interaction
+        .catch(() => {
+          // Autoplay blocked by browser until user gesture
           return false;
         });
     }
@@ -105,14 +106,18 @@ class OceanicAudioSystem {
       this.ctx.resume().catch(() => {});
     }
 
-    if (!this.isMuted && this.bgAudio && !this.bgAudio.paused) {
+    if (this.isPlaying()) {
       this.stopBgAudio();
       return false;
     } else {
       this.isExplicitlyMuted = false;
-      this.startBgAudio();
+      this.startBgAudio(true);
       return true;
     }
+  }
+
+  isPlaying() {
+    return Boolean(this.bgAudio && !this.bgAudio.paused && !this.isMuted);
   }
 
   fadeAudio(targetVol, durationMs, onComplete) {

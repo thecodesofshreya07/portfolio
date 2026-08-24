@@ -692,45 +692,63 @@ export default function Portfolio() {
   const [activeNav, setActiveNav] = useState("Home");
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [soundOn, setSoundOn] = useState(true);
+  const [soundOn, setSoundOn] = useState(false);
+  const [showAudioPrompt, setShowAudioPrompt] = useState(false);
 
   const toggleSound = () => {
     const isNowPlaying = sound.toggleSound();
     setSoundOn(isNowPlaying);
   };
 
-  useEffect(() => {
-    // Attempt automatic playback on initial load
-    sound.startBgAudio().then((started) => {
-      if (started) {
-        setSoundOn(true);
-      } else {
-        // If autoplay is blocked by browser policies (standard on mobile),
-        // unlock audio upon first genuine user gesture (touch, click, pointer, key).
-        // Note: Do NOT use "scroll" since mobile browsers reject scroll as a user activation token.
-        const unlockAudio = () => {
-          if (!sound.isExplicitlyMuted) {
-            sound.startBgAudio().then((res) => {
-              if (res) {
-                setSoundOn(true);
-                cleanup();
-              }
-            });
-          } else {
-            cleanup();
-          }
-        };
-
-        const events = ["touchstart", "touchend", "pointerup", "click", "keydown"];
-        const cleanup = () => {
-          events.forEach((ev) => window.removeEventListener(ev, unlockAudio, { capture: true }));
-        };
-
-        events.forEach((ev) => window.addEventListener(ev, unlockAudio, { capture: true, passive: true }));
-
-        return cleanup;
-      }
+  const handleEnableAudio = () => {
+    sound.startBgAudio(true).then(() => {
+      setSoundOn(true);
+      setShowAudioPrompt(false);
     });
+  };
+
+  const handleDismissAudio = () => {
+    sound.stopBgAudio();
+    setSoundOn(false);
+    setShowAudioPrompt(false);
+  };
+
+  useEffect(() => {
+    let unlocked = false;
+
+    const tryStartAudio = () => {
+      if (unlocked || sound.isExplicitlyMuted) return;
+      sound.startBgAudio().then((res) => {
+        if (res) {
+          unlocked = true;
+          setSoundOn(true);
+          setShowAudioPrompt(false);
+          cleanup();
+        } else {
+          // If the browser blocks background audio, ask user explicitly for audio permission
+          setShowAudioPrompt(true);
+        }
+      });
+    };
+
+    // 1. Attempt immediate autoplay
+    tryStartAudio();
+
+    // 2. Attach unlock listeners across user activation events as fallback
+    const events = ["touchstart", "touchend", "pointerdown", "pointerup", "click", "keydown"];
+    const cleanup = () => {
+      events.forEach((ev) => {
+        window.removeEventListener(ev, tryStartAudio, { capture: true });
+        document.removeEventListener(ev, tryStartAudio, { capture: true });
+      });
+    };
+
+    events.forEach((ev) => {
+      window.addEventListener(ev, tryStartAudio, { capture: true, passive: true });
+      document.addEventListener(ev, tryStartAudio, { capture: true, passive: true });
+    });
+
+    return cleanup;
   }, []);
 
   useEffect(() => {
@@ -802,6 +820,115 @@ export default function Portfolio() {
     <div style={{ width: "100%", minHeight: "100vh", position: "relative" }}>
       {/* ── 1. PHOTOREALISTIC OCEANIC BACKGROUND WITH CAUSTICS & LIGHT RAYS ── */}
       <OceanicCanvas />
+
+      {/* ── Audio Permission Entrance Modal (for browsers blocking autoplay) ── */}
+      {showAudioPrompt && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 9999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "20px",
+            background: "rgba(2, 11, 22, 0.78)",
+            backdropFilter: "blur(18px)",
+            WebkitBackdropFilter: "blur(18px)",
+          }}
+        >
+          <div
+            className="peach-card audio-modal-anim"
+            style={{
+              maxWidth: 420,
+              width: "100%",
+              borderRadius: 24,
+              padding: "32px 26px",
+              textAlign: "center",
+              position: "relative",
+              border: "1px solid rgba(56, 189, 248, 0.35)",
+              boxShadow: "0 24px 64px rgba(0, 0, 0, 0.8), 0 0 40px rgba(56, 189, 248, 0.2)",
+            }}
+          >
+            {/* Glowing Sound Icon & Equalizer Wave */}
+            <div
+              style={{
+                width: 60,
+                height: 60,
+                borderRadius: "50%",
+                background: "linear-gradient(135deg, rgba(255, 114, 159, 0.25), rgba(56, 189, 248, 0.25))",
+                border: "1px solid rgba(56, 189, 248, 0.5)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 16px",
+                fontSize: 26,
+                boxShadow: "0 0 24px rgba(56, 189, 248, 0.35)",
+              }}
+            >
+              🎧
+            </div>
+
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#38bdf8", marginBottom: 6 }}>
+              Atmospheric Soundscape
+            </div>
+
+            <h3 style={{ fontSize: "clamp(1.25rem, 4vw, 1.45rem)", fontWeight: 800, color: "#ffffff", marginBottom: 10, lineHeight: 1.3 }}>
+              Enable Audio Experience?
+            </h3>
+
+            <p style={{ fontSize: 13.5, color: "#cbd5e1", lineHeight: 1.6, marginBottom: 24 }}>
+              This portfolio features an immersive ambient oceanographic soundscape designed for headphones and speakers.
+            </p>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <button
+                onClick={handleEnableAudio}
+                className="pulse-glow-btn"
+                style={{
+                  width: "100%",
+                  padding: "13px 20px",
+                  borderRadius: 99,
+                  background: "linear-gradient(135deg, #ff729f 0%, #38bdf8 100%)",
+                  color: "#020b16",
+                  fontWeight: 800,
+                  fontSize: 14,
+                  border: "none",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 8,
+                  transition: "transform 0.2s ease",
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.transform = "scale(1.02)"; }}
+                onMouseOut={(e) => { e.currentTarget.style.transform = "scale(1)"; }}
+              >
+                <span>🔊</span>
+                <span>Enable Sound & Enter</span>
+              </button>
+
+              <button
+                onClick={handleDismissAudio}
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  color: "#94a3b8",
+                  fontSize: 12.5,
+                  fontWeight: 600,
+                  padding: "8px 12px",
+                  cursor: "pointer",
+                  transition: "color 0.2s ease",
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.color = "#ffffff"; }}
+                onMouseOut={(e) => { e.currentTarget.style.color = "#94a3b8"; }}
+              >
+                Continue in Silence
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── 2. PEACHWEB FLOATING FROSTED HEADER ── */}
       <header

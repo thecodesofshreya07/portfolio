@@ -202,7 +202,19 @@ export default function OceanicDataNode() {
       targetRotX = yNorm * 0.55;
     };
 
-    container.addEventListener("mousemove", handleMouseMove);
+    const handleTouchMove = (e) => {
+      if (!e.touches || e.touches.length === 0) return;
+      const rect = container.getBoundingClientRect();
+      const xNorm = ((e.touches[0].clientX - rect.left) / rect.width) * 2 - 1;
+      const yNorm = ((e.touches[0].clientY - rect.top) / rect.height) * 2 - 1;
+      targetRotY = xNorm * 0.75;
+      targetRotX = yNorm * 0.55;
+    };
+
+    renderer.domElement.style.touchAction = "pan-y";
+    container.addEventListener("mousemove", handleMouseMove, { passive: true });
+    container.addEventListener("touchmove", handleTouchMove, { passive: true });
+    container.addEventListener("touchstart", handleMouseEnter, { passive: true });
 
     // Resize Observer for flawless responsive scaling
     const resizeObserver = new ResizeObserver((entries) => {
@@ -263,7 +275,10 @@ export default function OceanicDataNode() {
 
     return () => {
       cancelAnimationFrame(animId);
+      container.removeEventListener("mouseenter", handleMouseEnter);
       container.removeEventListener("mousemove", handleMouseMove);
+      container.removeEventListener("touchmove", handleTouchMove);
+      container.removeEventListener("touchstart", handleMouseEnter);
       resizeObserver.disconnect();
       if (container && renderer.domElement) {
         container.removeChild(renderer.domElement);
@@ -278,12 +293,12 @@ export default function OceanicDataNode() {
       style={{
         width: "100%",
         height: "100%",
-        minHeight: 440,
+        minHeight: "clamp(290px, 45vw, 420px)",
         position: "relative",
-        cursor: "grab",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        touchAction: "pan-y",
       }}
     />
   );

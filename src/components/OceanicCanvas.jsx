@@ -9,18 +9,26 @@ export default function OceanicCanvas() {
     const ctx = canvas.getContext("2d");
 
     let animId;
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
+    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let width = window.innerWidth;
+    let height = window.innerHeight;
 
     const handleResize = () => {
       if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = width + "px";
+      canvas.style.height = height + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
+    handleResize();
     window.addEventListener("resize", handleResize);
 
-    // Rich, vibrant, glossy oceanic bubbles
-    const bubbleCount = 28;
+    // Rich, vibrant, glossy oceanic bubbles with solid contrast on mobile & desktop
+    const bubbleCount = width < 600 ? 22 : 32;
     const bubbles = Array.from({ length: bubbleCount }, () => ({
       x: Math.random() * width,
       y: Math.random() * height + height * 0.1,
@@ -29,7 +37,7 @@ export default function OceanicCanvas() {
       wobbleSpeed: Math.random() * 0.016 + 0.008,
       wobbleDist: Math.random() * 24 + 10,
       wobbleOffset: Math.random() * Math.PI * 2,
-      opacity: Math.random() * 0.35 + 0.45, // Rich, bright, prominent
+      opacity: Math.random() * 0.35 + 0.55, // Rich, bright, prominent (0.55 to 0.90)
       hue: Math.random() > 0.4 ? "cyan" : "peach",
     }));
 
@@ -65,10 +73,10 @@ export default function OceanicCanvas() {
           0,
           b.radius
         );
-        grad.addColorStop(0, "rgba(255, 255, 255, " + Math.min(1, b.opacity * 0.75) + ")");
-        grad.addColorStop(0.35, innerColor + b.opacity * 0.25 + ")");
-        grad.addColorStop(0.8, rimColor + b.opacity * 0.75 + ")");
-        grad.addColorStop(1, rimColor + b.opacity + ")");
+        grad.addColorStop(0, "rgba(255, 255, 255, " + Math.min(1, b.opacity * 0.85) + ")");
+        grad.addColorStop(0.35, innerColor + b.opacity * 0.35 + ")");
+        grad.addColorStop(0.8, rimColor + b.opacity * 0.85 + ")");
+        grad.addColorStop(1, rimColor + Math.min(1, b.opacity * 1.1) + ")");
 
         ctx.beginPath();
         ctx.arc(0, 0, b.radius, 0, Math.PI * 2);
@@ -76,8 +84,8 @@ export default function OceanicCanvas() {
         ctx.fill();
 
         // Vivid Bubble Rim
-        ctx.strokeStyle = rimColor + Math.min(1, b.opacity * 0.9) + ")";
-        ctx.lineWidth = 1.4;
+        ctx.strokeStyle = rimColor + Math.min(1, b.opacity * 0.95) + ")";
+        ctx.lineWidth = 1.6;
         ctx.stroke();
 
         // Specular Highlight
@@ -91,7 +99,7 @@ export default function OceanicCanvas() {
           0,
           Math.PI * 2
         );
-        ctx.fillStyle = "rgba(255, 255, 255, " + Math.min(1, b.opacity * 0.9) + ")";
+        ctx.fillStyle = "rgba(255, 255, 255, " + Math.min(1, b.opacity * 0.95) + ")";
         ctx.fill();
 
         ctx.restore();
@@ -144,7 +152,7 @@ export default function OceanicCanvas() {
         }}
       />
 
-      {/* Light Translucent Deep-Sea Bubbles Canvas */}
+      {/* Vibrant Deep-Sea Bubbles Canvas */}
       <canvas
         ref={bubblesCanvasRef}
         style={{

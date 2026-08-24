@@ -797,6 +797,7 @@ export default function Portfolio() {
       <OceanicCanvas />
 
       {/* ── Audio Permission Entrance Modal (for browsers blocking autoplay) ── */}
+      {/* ── Ocean-Themed Audio Permission Entrance Modal ── */}
       {showAudioPrompt && (
         <div
           style={{
@@ -807,100 +808,155 @@ export default function Portfolio() {
             alignItems: "center",
             justifyContent: "center",
             padding: "20px",
-            background: "rgba(2, 11, 22, 0.78)",
-            backdropFilter: "blur(18px)",
-            WebkitBackdropFilter: "blur(18px)",
+            background: "radial-gradient(ellipse at 50% 0%, rgba(13, 34, 51, 0.94) 0%, rgba(6, 20, 32, 0.96) 55%, rgba(3, 10, 17, 0.98) 100%)",
+            backdropFilter: "blur(16px)",
+            WebkitBackdropFilter: "blur(16px)",
+            overflow: "hidden",
           }}
         >
+          {/* Ambient Light Rays */}
+          <div className="intro-modal-rays" />
+
+          {/* Floating Theme-Colored Bubbles */}
+          {[
+            { size: 14, left: "6%", duration: 11, delay: 0, type: "cyan" },
+            { size: 8, left: "14%", duration: 14, delay: 2.5, type: "pink" },
+            { size: 20, left: "22%", duration: 9, delay: 5.2, type: "cyan" },
+            { size: 10, left: "31%", duration: 16, delay: 1.1, type: "pink" },
+            { size: 16, left: "42%", duration: 12, delay: 6.4, type: "cyan" },
+            { size: 7, left: "54%", duration: 15, delay: 3.2, type: "pink" },
+            { size: 22, left: "63%", duration: 10, delay: 4.8, type: "cyan" },
+            { size: 12, left: "74%", duration: 13, delay: 0.8, type: "pink" },
+            { size: 18, left: "83%", duration: 11, delay: 7.1, type: "cyan" },
+            { size: 9, left: "92%", duration: 17, delay: 2.1, type: "pink" },
+            { size: 15, left: "10%", duration: 13, delay: 8.5, type: "pink" },
+            { size: 11, left: "27%", duration: 10, delay: 9.3, type: "cyan" },
+            { size: 24, left: "48%", duration: 12, delay: 3.9, type: "cyan" },
+            { size: 8, left: "69%", duration: 15, delay: 1.7, type: "pink" },
+            { size: 17, left: "88%", duration: 10, delay: 4.2, type: "cyan" },
+          ].map((b, idx) => (
+            <div
+              key={idx}
+              className={`intro-modal-bubble ${b.type === "pink" ? "intro-bubble-pink" : "intro-bubble-cyan"}`}
+              style={{
+                width: b.size,
+                height: b.size,
+                left: b.left,
+                bottom: "-30px",
+                animationDuration: `${b.duration}s`,
+                animationDelay: `${b.delay}s`,
+              }}
+            />
+          ))}
+
+          {/* Floating Subtle Jellyfish SVGs */}
+          <svg
+            className="intro-modal-jelly"
+            style={{ top: "8%", left: "8%", width: "clamp(60px, 8vw, 84px)", opacity: 0.22 }}
+            viewBox="0 0 100 140"
+            fill="none"
+          >
+            <ellipse cx="50" cy="45" rx="40" ry="35" fill="rgba(56, 189, 248, 0.45)" />
+            <path
+              d="M15 55 Q20 100 15 135 M30 60 Q35 105 28 135 M50 62 Q50 110 50 138 M70 60 Q65 105 72 135 M85 55 Q80 100 85 135"
+              stroke="#38bdf8"
+              strokeWidth="2"
+              fill="none"
+              strokeLinecap="round"
+            />
+          </svg>
+          <svg
+            className="intro-modal-jelly"
+            style={{ bottom: "10%", right: "6%", width: "clamp(70px, 9vw, 100px)", animationDelay: "-4s", opacity: 0.2 }}
+            viewBox="0 0 100 140"
+            fill="none"
+          >
+            <ellipse cx="50" cy="45" rx="40" ry="35" fill="rgba(255, 114, 159, 0.45)" />
+            <path
+              d="M15 55 Q20 100 15 135 M30 60 Q35 105 28 135 M50 62 Q50 110 50 138 M70 60 Q65 105 72 135 M85 55 Q80 100 85 135"
+              stroke="#ff729f"
+              strokeWidth="2"
+              fill="none"
+              strokeLinecap="round"
+            />
+          </svg>
+
+          {/* Glass Card */}
           <div
-            className="peach-card audio-modal-anim"
+            className="audio-modal-anim"
             onClick={(e) => e.stopPropagation()}
             style={{
-              maxWidth: 420,
-              width: "100%",
-              borderRadius: 24,
-              padding: "32px 26px",
-              textAlign: "center",
               position: "relative",
-              border: "1px solid rgba(56, 189, 248, 0.35)",
-              boxShadow: "0 24px 64px rgba(0, 0, 0, 0.8), 0 0 40px rgba(56, 189, 248, 0.2)",
+              width: 540,
+              maxWidth: "92vw",
+              padding: "48px 40px 36px",
+              borderRadius: 20,
+              background: "linear-gradient(160deg, rgba(14, 34, 50, 0.72), rgba(6, 16, 26, 0.88))",
+              backdropFilter: "blur(18px)",
+              WebkitBackdropFilter: "blur(18px)",
+              border: "1px solid rgba(56, 189, 248, 0.22)",
+              boxShadow: "0 24px 64px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.08)",
+              textAlign: "center",
+              zIndex: 10,
             }}
           >
-            {/* Glowing Sound Icon & Equalizer Wave */}
-            <div
-              style={{
-                width: 60,
-                height: 60,
-                borderRadius: "50%",
-                background: "linear-gradient(135deg, rgba(255, 114, 159, 0.25), rgba(56, 189, 248, 0.25))",
-                border: "1px solid rgba(56, 189, 248, 0.5)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                margin: "0 auto 16px",
-                fontSize: 26,
-                boxShadow: "0 0 24px rgba(56, 189, 248, 0.35)",
-              }}
-            >
-              🎧
+            {/* Animated Soundwave Equalizer Mark */}
+            <div className="intro-modal-wave">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
             </div>
 
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#38bdf8", marginBottom: 6 }}>
+            <div
+              style={{
+                color: "#38bdf8",
+                fontSize: 12,
+                fontWeight: 700,
+                letterSpacing: "3.5px",
+                textTransform: "uppercase",
+                marginBottom: 14,
+                opacity: 0.9,
+              }}
+            >
               BELOW THE SURFACE
             </div>
 
-            <h3 style={{ fontSize: "clamp(1.25rem, 4vw, 1.45rem)", fontWeight: 800, color: "#ffffff", marginBottom: 10, lineHeight: 1.3 }}>
+            <h2
+              style={{
+                fontSize: "clamp(22px, 4.5vw, 30px)",
+                fontWeight: 800,
+                color: "#f2f6f9",
+                lineHeight: 1.3,
+                letterSpacing: "-0.3px",
+                marginBottom: 14,
+              }}
+            >
               Listen for what remains unheard.
-            </h3>
+            </h2>
 
-            <p style={{ fontSize: 13.5, color: "#cbd5e1", lineHeight: 1.6, marginBottom: 24 }}>
-              Take a moment.
-            </p>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <button
-                onClick={handleEnableAudio}
-                className="pulse-glow-btn"
-                style={{
-                  width: "100%",
-                  padding: "13px 20px",
-                  borderRadius: 99,
-                  background: "linear-gradient(135deg, #ff729f 0%, #38bdf8 100%)",
-                  color: "#020b16",
-                  fontWeight: 800,
-                  fontSize: 14,
-                  border: "none",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 8,
-                  transition: "transform 0.2s ease",
-                }}
-                onMouseOver={(e) => { e.currentTarget.style.transform = "scale(1.02)"; }}
-                onMouseOut={(e) => { e.currentTarget.style.transform = "scale(1)"; }}
-              >
-                Enter What Lies Beneath
-              </button>
-
-              <button
-                onClick={handleDismissAudio}
-                style={{
-                  background: "transparent",
-                  border: "none",
-                  color: "#94a3b8",
-                  fontSize: 12.5,
-                  fontWeight: 600,
-                  padding: "8px 12px",
-                  cursor: "pointer",
-                  transition: "color 0.2s ease",
-                }}
-                onMouseOver={(e) => { e.currentTarget.style.color = "#ffffff"; }}
-                onMouseOut={(e) => { e.currentTarget.style.color = "#94a3b8"; }}
-              >
-                Continue in silence
-              </button>
+            <div
+              style={{
+                color: "rgba(200, 218, 230, 0.7)",
+                fontSize: 15,
+                lineHeight: 1.6,
+                maxWidth: 400,
+                margin: "0 auto 32px",
+              }}
+            >
+              This site is built with ambient sound. Turn it on to experience it fully.
             </div>
+
+            <button onClick={handleEnableAudio} className="intro-modal-cta">
+              Enable Sound
+            </button>
+
+            <button onClick={handleDismissAudio} className="intro-modal-silence">
+              Continue in silence
+            </button>
           </div>
         </div>
       )}

@@ -30,6 +30,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  cursor: default;
 }
 
 html, body {
@@ -41,6 +42,15 @@ html, body {
   scroll-behavior: smooth;
   background-color: #020b16;
   color: #ffffff;
+  cursor: default;
+}
+
+h1, h2, h3, h4, h5, h6, p, span, li, blockquote, label {
+  cursor: default;
+}
+
+a, button, [role="button"], select, summary, [type="button"], [type="submit"], [type="reset"], .cursor-pointer {
+  cursor: pointer;
 }
 
 #root {

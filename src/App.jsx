@@ -3,19 +3,30 @@ import React, { useState, useEffect, useRef } from "react";
 const NAV_LINKS = ["Home", "About", "Skills", "Projects", "Experience", "Contact"];
 
 const SKILLS = {
+  "Agentic AI & LLMs": ["Autonomous Agents", "Tool & Function Calling", "Groq (Llama 3.3)", "Gemini API", "RAG Systems", "Model Context Protocol (MCP)"],
   Languages: ["Python", "JavaScript", "Java", "C"],
-  Frontend: ["React.js", "HTML5", "CSS3", "Tailwind CSS", "Framer Motion"],
-  "Backend & Tools": ["Node.js", "Express.js", "RESTful APIs", "JWT Auth", "Git", "GitHub", "Vercel", "Render"],
-  Databases: ["MongoDB", "SQL", "PostgreSQL", "Schema Design"],
+  Frontend: ["React.js", "HTML5", "CSS3", "Tailwind CSS", "Framer Motion", "Recharts"],
+  "Backend & Tools": ["Node.js", "Express.js", "RESTful APIs", "Server-Sent Events (SSE)", "JWT Auth", "Git", "GitHub", "Vercel", "Render"],
+  Databases: ["PostgreSQL", "MongoDB", "SQL", "Schema Design"],
   "CS Fundamentals": ["DSA", "DBMS", "Operating Systems", "OOP"],
   "Soft Skills": ["Communication", "Team Leadership", "Event Management", "Problem Solving", "Time Management"],
 };
 
 const PROJECTS = [
   {
+    name: "SiteSync",
+    subtitle: "AI Construction Operations & Agentic Site Management",
+    tags: ["React 19", "Node.js", "PostgreSQL", "Groq / Llama 3.3", "Gemini API", "Agentic Tools", "MCP", "SSE", "Tailwind CSS"],
+    desc: "Enterprise multi-site construction operations platform combining real-time telemetry with autonomous LLM agents. Features multi-step tool-calling agents for automated root-cause analysis (RCA), dynamic stockout depletion balancing, 72-hour multimodal photo milestone predictions, 6-stage procurement pipeline tracking, and Model Context Protocol (MCP) server integration.",
+    stats: ["Agentic AI", "Tool Calling", "RAG & MCP", "Real-Time SSE", "Live App"],
+    link: "https://github.com/thecodesofshreya07/sitesync",
+    live: "https://site-sync-fawn.vercel.app/",
+    color: "#06b6d4",
+  },
+  {
     name: "Artello",
     subtitle: "Creative Collaboration Tool",
-    tags: ["React.js", "Canvas", "Socket.io","Node.js", "MongoDB"],
+    tags: ["React.js", "Canvas", "Socket.io", "Node.js", "MongoDB"],
     desc: "A real-time multiplayer whiteboard built with React and Socket.io, engineered for smooth collaboration at scale. A two-layer canvas architecture redraws only the active stroke instead of the entire drawing history, keeping boards fluid even as they grow large — paired with stroke-point compression that cuts network traffic by ~80%.",
     stats: ["Canvas Drawing", "Real-Time", "Creative Tool"],
     link: "https://github.com/thecodesofshreya07/artello",
@@ -208,7 +219,7 @@ function ScrollTopBtn({ T, scrolled }) {
       onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.filter = ""; }}
     >
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="18 15 12 9 6 15"/>
+        <polyline points="18 15 12 9 6 15" />
       </svg>
     </button>
   ) : null;
@@ -387,7 +398,7 @@ export default function Portfolio() {
   const [active, setActive] = useState("Home");
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const typed = useTypewriter(["a Full-Stack Developer", "a React.js Enthusiast", "a Backend Enthusiast", "an Aspiring SDE", "a Problem Solver"]);
+  const typed = useTypewriter(["an Agentic AI & Full-Stack Developer", "a React.js Specialist", "a Backend Enthusiast", "an Aspiring SDE", "a Problem Solver"]);
 
   const T = dark ? {
     bg: "#09090e", bgAlt: "#0c0c14", bgCard: "rgba(255,255,255,0.035)",
@@ -621,16 +632,16 @@ export default function Portfolio() {
                 {/* Sun icon (visible in dark mode → clicking switches to light) */}
                 <span className="toggle-icon" style={{ left: 5, opacity: dark ? 1 : 0 }}>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={T.accent} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                    <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                    <circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" />
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                    <line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" />
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
                   </svg>
                 </span>
                 {/* Moon icon (visible in light mode → clicking switches to dark) */}
                 <span className="toggle-icon" style={{ right: 5, opacity: dark ? 0 : 1 }}>
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={T.toggleKnob} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                   </svg>
                 </span>
                 <span className="toggle-knob" style={{ left: dark ? "calc(100% - 21px)" : 2, background: T.toggleKnob }} />
@@ -684,7 +695,7 @@ export default function Portfolio() {
               <a href="/Shreya_Mishra_Resume.pdf" download style={{ padding: "12px 32px", background: "transparent", color: T.btnSecColor, border: `1.5px solid ${T.btnSecBorder}`, borderRadius: 8, fontWeight: 600, fontSize: 14, cursor: "pointer", transition: "all 0.2s", fontFamily: "'DM Sans',sans-serif", display: "inline-flex", alignItems: "center", gap: 7, textDecoration: "none" }}
                 onMouseEnter={e => { e.currentTarget.style.background = T.pillBg; }}
                 onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
                 Resume
               </a>
               <button onClick={() => scrollTo("Contact")} style={{ padding: "12px 32px", background: "transparent", color: T.btnSecColor, border: `1.5px solid ${T.btnSecBorder}`, borderRadius: 8, fontWeight: 600, fontSize: 14, cursor: "pointer", transition: "all 0.2s", fontFamily: "'DM Sans',sans-serif" }}
@@ -694,7 +705,7 @@ export default function Portfolio() {
               </button>
             </div>
             <div className="hero-stats">
-              {[{ label: "9.5", sub: "CGPA" }, { label: "8+", sub: "Projects" }, { label: "6+", sub: "Live Apps" }].map(({ label, sub }) => (
+              {[{ label: "9.5", sub: "CGPA" }, { label: "9+", sub: "Projects" }, { label: "7+", sub: "Live Apps" }].map(({ label, sub }) => (
                 <div key={sub} style={{ textAlign: "center" }}>
                   <div style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(28px,4vw,38px)", fontWeight: 700, color: T.statVal, letterSpacing: "-0.03em" }}>{label}</div>
                   <div style={{ fontSize: 11, color: T.textMuted, textTransform: "uppercase", letterSpacing: "0.14em", marginTop: 4, fontWeight: 500 }}>{sub}</div>

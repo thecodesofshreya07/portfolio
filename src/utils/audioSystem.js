@@ -7,21 +7,54 @@ class OceanicAudioSystem {
     this.isMuted = false;
     this.isExplicitlyMuted = false;
     this.fadeInterval = null;
+    this.targetVolume = 0.65;
   }
 
   initBgAudio() {
     if (this.bgAudio) return;
-    this.bgAudio = new Audio("/mysound.mp3");
-    this.bgAudio.loop = true;
-    this.bgAudio.volume = 0;
-    this.bgAudio.preload = "auto";
+    try {
+      const baseUrl =
+        typeof import.meta !== "undefined" && import.meta.env && import.meta.env.BASE_URL
+          ? import.meta.env.BASE_URL
+          : "/";
+      const soundSrc = `${baseUrl.endsWith("/") ? baseUrl : baseUrl + "/"}mysound.mp3`;
+
+      this.bgAudio = new Audio(soundSrc);
+      this.bgAudio.loop = true;
+      this.bgAudio.preload = "auto";
+      this.bgAudio.playsInline = true;
+      this.bgAudio.setAttribute("playsinline", "true");
+      this.bgAudio.setAttribute("webkit-playsinline", "true");
+
+      // Default volume set to audible level for platforms that restrict dynamic volume fading (e.g. iOS)
+      try {
+        this.bgAudio.volume = this.targetVolume;
+      } catch (e) {}
+
+      // Robust loop safeguard across mobile WebKit implementations
+      this.bgAudio.addEventListener("ended", () => {
+        if (!this.isExplicitlyMuted && this.bgAudio) {
+          this.bgAudio.currentTime = 0;
+          this.bgAudio.play().catch(() => {});
+        }
+      });
+    } catch (e) {
+      console.warn("Could not create HTML5 Audio element:", e);
+    }
   }
 
   initWebAudio() {
-    if (this.ctx) return;
+    if (this.ctx) {
+      if (this.ctx.state === "suspended") {
+        this.ctx.resume().catch(() => {});
+      }
+      return;
+    }
     try {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
-      this.ctx = new AudioContext();
+      if (AudioContext) {
+        this.ctx = new AudioContext();
+      }
     } catch (e) {}
   }
 
@@ -34,26 +67,34 @@ class OceanicAudioSystem {
       this.ctx.resume().catch(() => {});
     }
 
-    this.isMuted = false;
+    if (!this.bgAudio) return Promise.resolve(false);
 
-    return this.bgAudio
-      .play()
-      .then(() => {
-        this.fadeAudio(0.75, 600);
-        return true;
-      })
-      .catch((e) => {
-        // Autoplay may be blocked until user interacts with the page
-        return false;
-      });
+    this.isMuted = false;
+    try {
+      this.bgAudio.volume = this.targetVolume;
+    } catch (e) {}
+
+    const playPromise = this.bgAudio.play();
+    if (playPromise !== undefined) {
+      return playPromise
+        .then(() => {
+          this.isMuted = false;
+          return true;
+        })
+        .catch((e) => {
+          // Autoplay policy blocked until user interaction
+          return false;
+        });
+    }
+    return Promise.resolve(true);
   }
 
   stopBgAudio() {
     this.isMuted = true;
     this.isExplicitlyMuted = true;
-    this.fadeAudio(0, 400, () => {
-      if (this.bgAudio) this.bgAudio.pause();
-    });
+    if (this.bgAudio) {
+      this.bgAudio.pause();
+    }
   }
 
   toggleSound() {
@@ -78,34 +119,42 @@ class OceanicAudioSystem {
     if (!this.bgAudio) return;
     if (this.fadeInterval) clearInterval(this.fadeInterval);
 
-    const startVol = this.bgAudio.volume;
-    const stepTime = 30;
-    const steps = Math.max(1, durationMs / stepTime);
-    const volStep = (targetVol - startVol) / steps;
-    let currentStep = 0;
+    try {
+      const startVol = this.bgAudio.volume;
+      const stepTime = 35;
+      const steps = Math.max(1, durationMs / stepTime);
+      const volStep = (targetVol - startVol) / steps;
+      let currentStep = 0;
 
-    this.fadeInterval = setInterval(() => {
-      currentStep++;
-      let newVol = this.bgAudio.volume + volStep;
-      if (newVol < 0) newVol = 0;
-      if (newVol > 1) newVol = 1;
-      this.bgAudio.volume = newVol;
+      this.fadeInterval = setInterval(() => {
+        currentStep++;
+        let newVol = this.bgAudio.volume + volStep;
+        if (newVol < 0) newVol = 0;
+        if (newVol > 1) newVol = 1;
+        try {
+          this.bgAudio.volume = newVol;
+        } catch (e) {}
 
-      if (currentStep >= steps) {
-        clearInterval(this.fadeInterval);
-        this.bgAudio.volume = targetVol;
-        if (onComplete) onComplete();
-      }
-    }, stepTime);
+        if (currentStep >= steps) {
+          clearInterval(this.fadeInterval);
+          try {
+            this.bgAudio.volume = targetVol;
+          } catch (e) {}
+          if (onComplete) onComplete();
+        }
+      }, stepTime);
+    } catch (e) {
+      if (onComplete) onComplete();
+    }
   }
 
   // ── Tactile Micro-Interaction Sound Effects ─────────────────────────────
   playClick() {
-    if (this.isMuted) return;
+    if (this.isMuted || this.isExplicitlyMuted) return;
     this.initWebAudio();
     if (!this.ctx) return;
     try {
-      if (this.ctx.state === "suspended") this.ctx.resume();
+      if (this.ctx.state === "suspended") this.ctx.resume().catch(() => {});
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
 
@@ -125,11 +174,11 @@ class OceanicAudioSystem {
   }
 
   playHover(freq = 520) {
-    if (this.isMuted) return;
+    if (this.isMuted || this.isExplicitlyMuted) return;
     this.initWebAudio();
     if (!this.ctx) return;
     try {
-      if (this.ctx.state === "suspended") this.ctx.resume();
+      if (this.ctx.state === "suspended") this.ctx.resume().catch(() => {});
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
       const filter = this.ctx.createBiquadFilter();
@@ -154,11 +203,11 @@ class OceanicAudioSystem {
   }
 
   playSonarPing() {
-    if (this.isMuted) return;
+    if (this.isMuted || this.isExplicitlyMuted) return;
     this.initWebAudio();
     if (!this.ctx) return;
     try {
-      if (this.ctx.state === "suspended") this.ctx.resume();
+      if (this.ctx.state === "suspended") this.ctx.resume().catch(() => {});
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
 

@@ -705,23 +705,30 @@ export default function Portfolio() {
       if (started) {
         setSoundOn(true);
       } else {
-        // If the browser blocks autoplay before user interaction,
-        // start audio on the very first user interaction (click, scroll, touch, keydown)
+        // If autoplay is blocked by browser policies (standard on mobile),
+        // unlock audio upon first genuine user gesture (touch, click, pointer, key).
+        // Note: Do NOT use "scroll" since mobile browsers reject scroll as a user activation token.
         const unlockAudio = () => {
           if (!sound.isExplicitlyMuted) {
             sound.startBgAudio().then((res) => {
-              if (res) setSoundOn(true);
+              if (res) {
+                setSoundOn(true);
+                cleanup();
+              }
             });
+          } else {
+            cleanup();
           }
-          cleanup();
         };
 
-        const events = ["pointerdown", "click", "touchstart", "keydown", "scroll"];
+        const events = ["touchstart", "touchend", "pointerup", "click", "keydown"];
         const cleanup = () => {
           events.forEach((ev) => window.removeEventListener(ev, unlockAudio, { capture: true }));
         };
 
-        events.forEach((ev) => window.addEventListener(ev, unlockAudio, { capture: true, once: true }));
+        events.forEach((ev) => window.addEventListener(ev, unlockAudio, { capture: true, passive: true }));
+
+        return cleanup;
       }
     });
   }, []);

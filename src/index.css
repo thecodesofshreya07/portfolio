@@ -164,3 +164,35 @@ p, span, li, a {
 button, a {
   -webkit-tap-highlight-color: transparent;
 }
+
+/* Animated Audio Wave Bars */
+@keyframes wave1 {
+  0%, 100% { height: 4px; }
+  50% { height: 14px; }
+}
+@keyframes wave2 {
+  0%, 100% { height: 12px; }
+  50% { height: 5px; }
+}
+@keyframes wave3 {
+  0%, 100% { height: 6px; }
+  50% { height: 16px; }
+}
+@keyframes wave4 {
+  0%, 100% { height: 14px; }
+  50% { height: 7px; }
+}
+
+.bar-anim-1 {
+  animation: wave1 0.9s ease-in-out infinite alternate;
+}
+.bar-anim-2 {
+  animation: wave2 0.75s ease-in-out infinite alternate;
+}
+.bar-anim-3 {
+  animation: wave3 1.1s ease-in-out infinite alternate;
+}
+.bar-anim-4 {
+  animation: wave4 0.85s ease-in-out infinite alternate;
+}
+

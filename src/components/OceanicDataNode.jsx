@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { sound } from "../utils/audioSystem";
 
 export default function OceanicDataNode() {
   const mountRef = useRef(null);
@@ -7,6 +8,11 @@ export default function OceanicDataNode() {
   useEffect(() => {
     const container = mountRef.current;
     if (!container) return;
+
+    const handleMouseEnter = () => {
+      sound.playSonarPing();
+    };
+    container.addEventListener("mouseenter", handleMouseEnter);
 
     const width = container.clientWidth || 450;
     const height = container.clientHeight || 450;

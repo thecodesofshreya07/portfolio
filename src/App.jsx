@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import OceanicCanvas from "./components/OceanicCanvas";
 import OceanicDataNode from "./components/OceanicDataNode";
+import { sound } from "./utils/audioSystem";
 
 const NAV_LINKS = ["Home", "About", "Skills", "Projects", "Experience", "Contact"];
 
@@ -19,9 +20,9 @@ const PROJECTS = [
   {
     name: "SiteSync",
     subtitle: "AI Construction Operations & Agentic Site Management",
-    tags: ["React 19", "Node.js", "PostgreSQL", "Groq / Llama 3.3", "Gemini API", "Agentic Tools", "MCP", "SSE", "Tailwind CSS"],
+    tags: ["React", "Node.js", "PostgreSQL", "Groq", "Agentic Tools", "MCP", "SSE", "Tailwind CSS"],
     desc: "Enterprise multi-site construction operations platform combining real-time telemetry with autonomous LLM agents. Features multi-step tool-calling agents for automated root-cause analysis (RCA), dynamic stockout depletion balancing, 72-hour multimodal photo milestone predictions, 6-stage procurement pipeline tracking, and Model Context Protocol (MCP) server integration.",
-    stats: ["🏆 2nd Place · CODEISSANCE '26", "Agentic AI", "Tool Calling", "RAG & MCP", "Real-Time SSE", "Live App"],
+    stats: ["Agentic AI", "Tool Calling", "RAG & MCP", "Real-Time SSE"],
     link: "https://github.com/thecodesofshreya07/sitesync",
     live: "https://site-sync-fawn.vercel.app/",
     color: "#38bdf8",
@@ -210,12 +211,12 @@ function ContactGrid() {
           position: "relative",
         }}
       >
-        <span style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: "0.16em", marginBottom: 10, fontWeight: 700 }}>
+        <span style={{ fontSize: 11.5, color: "rgba(255,255,255,0.85)", textTransform: "uppercase", letterSpacing: "0.16em", marginBottom: 10, fontWeight: 700 }}>
           Email Address
         </span>
         <a
           href="mailto:sm8054800@gmail.com"
-          style={{ fontSize: 14, color: "#ff9ebb", fontWeight: 600, wordBreak: "break-all", lineHeight: 1.5, textDecoration: "none" }}
+          style={{ fontSize: 15, color: "#ffffff", fontWeight: 700, wordBreak: "break-all", lineHeight: 1.5, textDecoration: "none", textShadow: "0 1px 8px rgba(0,0,0,0.8)" }}
         >
           sm8054800@gmail.com
         </a>
@@ -224,14 +225,14 @@ function ContactGrid() {
           title="Copy email"
           style={{
             marginTop: 16,
-            background: "rgba(255, 255, 255, 0.12)",
-            border: "1px solid rgba(255, 255, 255, 0.22)",
+            background: "rgba(255, 255, 255, 0.16)",
+            border: "1px solid rgba(255, 255, 255, 0.3)",
             borderRadius: 99,
-            padding: "6px 18px",
-            fontSize: 12,
+            padding: "7px 20px",
+            fontSize: 12.5,
             color: copied ? "#4ef2d2" : "#ffffff",
             cursor: "pointer",
-            fontWeight: 600,
+            fontWeight: 700,
             transition: "all 0.2s",
           }}
         >
@@ -260,13 +261,13 @@ function ContactGrid() {
             textDecoration: "none",
           }}
         >
-          <span style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: "0.16em", marginBottom: 10, fontWeight: 700 }}>
+          <span style={{ fontSize: 11.5, color: "rgba(255,255,255,0.85)", textTransform: "uppercase", letterSpacing: "0.16em", marginBottom: 10, fontWeight: 700 }}>
             {label}
           </span>
-          <span style={{ fontSize: 14, color: "#38bdf8", fontWeight: 600, wordBreak: "break-all", lineHeight: 1.5 }}>
+          <span style={{ fontSize: 15, color: "#ffffff", fontWeight: 700, wordBreak: "break-all", lineHeight: 1.5, textShadow: "0 1px 8px rgba(0,0,0,0.8)" }}>
             {val}
           </span>
-          <span style={{ marginTop: 16, fontSize: 12, color: "rgba(255,255,255,0.7)", display: "flex", alignItems: "center", gap: 4 }}>
+          <span style={{ marginTop: 16, fontSize: 12.5, color: "#38bdf8", fontWeight: 700, display: "flex", alignItems: "center", gap: 4 }}>
             Open Link ↗
           </span>
         </a>
@@ -377,7 +378,10 @@ function CurrentlyLearning() {
 function ScrollTopBtn({ scrolled }) {
   return (
     <button
-      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      onClick={() => {
+        sound.playClick();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }}
       title="Back to top"
       aria-label="Back to top"
       style={{
@@ -385,14 +389,14 @@ function ScrollTopBtn({ scrolled }) {
         bottom: 28,
         right: 28,
         zIndex: 999,
-        width: 46,
-        height: 46,
+        width: 48,
+        height: 48,
         borderRadius: "50%",
-        background: "rgba(8, 28, 52, 0.78)",
+        background: "rgba(8, 28, 52, 0.85)",
         backdropFilter: "blur(20px)",
         WebkitBackdropFilter: "blur(20px)",
-        border: "1px solid rgba(56, 189, 248, 0.45)",
-        boxShadow: "0 8px 32px rgba(0, 0, 0, 0.55), 0 0 20px rgba(56, 189, 248, 0.28)",
+        border: "1px solid rgba(56, 189, 248, 0.5)",
+        boxShadow: "0 8px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.3)",
         cursor: "pointer",
         display: "flex",
         alignItems: "center",
@@ -404,19 +408,20 @@ function ScrollTopBtn({ scrolled }) {
         transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "translateY(-4px) scale(1.08)";
+        sound.playHover(720);
+        e.currentTarget.style.transform = "translateY(-4px) scale(1.1)";
         e.currentTarget.style.borderColor = "#ff729f";
         e.currentTarget.style.color = "#ff729f";
-        e.currentTarget.style.boxShadow = "0 12px 36px rgba(0,0,0,0.6), 0 0 24px rgba(255, 114, 159, 0.45)";
+        e.currentTarget.style.boxShadow = "0 12px 36px rgba(0,0,0,0.6), 0 0 24px rgba(255, 114, 159, 0.5)";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = scrolled ? "scale(1) translateY(0)" : "scale(0.8) translateY(18px)";
-        e.currentTarget.style.borderColor = "rgba(56, 189, 248, 0.45)";
+        e.currentTarget.style.borderColor = "rgba(56, 189, 248, 0.5)";
         e.currentTarget.style.color = "#38bdf8";
-        e.currentTarget.style.boxShadow = "0 8px 32px rgba(0, 0, 0, 0.55), 0 0 20px rgba(56, 189, 248, 0.28)";
+        e.currentTarget.style.boxShadow = "0 8px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.3)";
       }}
     >
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="18 15 12 9 6 15" />
       </svg>
     </button>
@@ -428,6 +433,12 @@ export default function Portfolio() {
   const [activeNav, setActiveNav] = useState("Home");
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [soundOn, setSoundOn] = useState(false);
+
+  const toggleSound = () => {
+    const isNowPlaying = sound.toggleSound();
+    setSoundOn(isNowPlaying);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -465,6 +476,7 @@ export default function Portfolio() {
   }, []);
 
   const scrollTo = (id) => {
+    sound.playClick();
     setMenuOpen(false);
     document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior: "smooth" });
   };
@@ -552,10 +564,11 @@ export default function Portfolio() {
             boxShadow: "0 8px 24px rgba(0,0,0,0.25)",
           }}
         >
-          {NAV_LINKS.map((n) => (
+          {NAV_LINKS.map((n, i) => (
             <span
               key={n}
               onClick={() => scrollTo(n)}
+              onMouseEnter={() => sound.playHover(440 + i * 55)}
               className={`nav-pill-item ${activeNav === n ? "active" : ""}`}
             >
               {n}
@@ -563,10 +576,55 @@ export default function Portfolio() {
           ))}
         </nav>
 
-        {/* Right: Action CTA Buttons */}
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        {/* Right: Action CTA Buttons & Sound Toggle */}
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          {/* Audio Soundscape Toggle Button (Michael Gatt style) */}
           <button
-            onClick={() => scrollTo("Contact")}
+            onClick={toggleSound}
+            title={soundOn ? "Mute soundscape" : "Enable atmospheric soundscape"}
+            aria-label="Toggle Sound"
+            style={{
+              background: soundOn ? "rgba(56, 189, 248, 0.2)" : "rgba(255, 255, 255, 0.08)",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
+              border: soundOn ? "1px solid rgba(56, 189, 248, 0.6)" : "1px solid rgba(255, 255, 255, 0.2)",
+              color: soundOn ? "#38bdf8" : "#cbd5e1",
+              borderRadius: 99,
+              padding: "7px 14px",
+              fontSize: 12,
+              fontWeight: 600,
+              cursor: "pointer",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 7,
+              transition: "all 0.2s ease",
+            }}
+            onMouseOver={(e) => {
+              sound.playHover(520);
+              e.currentTarget.style.borderColor = "#38bdf8";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.borderColor = soundOn ? "rgba(56, 189, 248, 0.6)" : "rgba(255, 255, 255, 0.2)";
+            }}
+          >
+            {/* Animated Equalizer Wave Bars */}
+            <div style={{ display: "flex", alignItems: "center", gap: 2, height: 12 }}>
+              <span className={`audio-bar ${soundOn ? "bar-anim-1" : ""}`} style={{ width: 2.5, height: soundOn ? 12 : 4, background: "currentColor", borderRadius: 2 }} />
+              <span className={`audio-bar ${soundOn ? "bar-anim-2" : ""}`} style={{ width: 2.5, height: soundOn ? 8 : 10, background: "currentColor", borderRadius: 2 }} />
+              <span className={`audio-bar ${soundOn ? "bar-anim-3" : ""}`} style={{ width: 2.5, height: soundOn ? 14 : 6, background: "currentColor", borderRadius: 2 }} />
+              <span className={`audio-bar ${soundOn ? "bar-anim-4" : ""}`} style={{ width: 2.5, height: soundOn ? 10 : 8, background: "currentColor", borderRadius: 2 }} />
+            </div>
+            <span style={{ fontSize: 11, letterSpacing: "0.06em", textTransform: "uppercase" }}>
+              {soundOn ? "Sound ON" : "Sound"}
+            </span>
+          </button>
+
+          <button
+            onClick={() => {
+              sound.playClick();
+              scrollTo("Contact");
+            }}
+            onMouseEnter={() => sound.playHover(580)}
             style={{
               background: "rgba(255, 255, 255, 0.1)",
               backdropFilter: "blur(20px)",
@@ -590,6 +648,8 @@ export default function Portfolio() {
           <a
             href="/Shreya_Mishra_Resume.pdf"
             download
+            onClick={() => sound.playClick()}
+            onMouseEnter={() => sound.playHover(660)}
             className="mobile-compact-btn"
             style={{
               background: "#ffffff",
@@ -619,7 +679,10 @@ export default function Portfolio() {
           </a>
 
           <button
-            onClick={() => setMenuOpen(!menuOpen)}
+            onClick={() => {
+              sound.playClick();
+              setMenuOpen(!menuOpen);
+            }}
             className="mobile-hamburger"
             style={{
               background: "rgba(255,255,255,0.12)",
@@ -741,13 +804,14 @@ export default function Portfolio() {
 
         <p
           style={{
-            color: "#e2e8f0",
-            fontSize: "clamp(15px, 1.8vw, 17px)",
-            maxWidth: 580,
+            color: "#ffffff",
+            fontSize: "clamp(15.5px, 1.9vw, 18px)",
+            maxWidth: 620,
             margin: "0 auto 38px",
             lineHeight: 1.8,
-            fontWeight: 400,
-            textShadow: "0 2px 10px rgba(0, 0, 0, 0.9)",
+            fontWeight: 600,
+            letterSpacing: "-0.01em",
+            textShadow: "0 2px 12px rgba(0, 0, 0, 0.95)",
           }}
         >
           Computer Engineering student · CGPA 9.5 · I love building things that actually work.
@@ -855,11 +919,11 @@ export default function Portfolio() {
               </h2>
               <div style={dividerBar} />
 
-              <p style={{ color: "#cbd5e1", lineHeight: 1.9, fontSize: 15.5, marginBottom: 18, fontWeight: 300 }}>
+              <p style={{ color: "#f1f5f9", lineHeight: 1.9, fontSize: 16, marginBottom: 18, fontWeight: 500, textShadow: "0 1px 6px rgba(0,0,0,0.9)" }}>
                 I'm a Computer Engineering student with a CGPA of 9.5, and I genuinely enjoy the process of building things — from designing APIs to making a UI feel just right. I've shipped 7+ full-stack apps that are live and actually used.
               </p>
 
-              <p style={{ color: "#cbd5e1", lineHeight: 1.9, fontSize: 15.5, marginBottom: 36, fontWeight: 300 }}>
+              <p style={{ color: "#f1f5f9", lineHeight: 1.9, fontSize: 16, marginBottom: 36, fontWeight: 500, textShadow: "0 1px 6px rgba(0,0,0,0.9)" }}>
                 Outside of code, I've been part of a national-level CSI committee where I got to lead events, handle sponsorships, and work with people from colleges across the country. I'm someone who follows through — whether that's a deadline, a bug at 2am, or a presentation.
               </p>
 
@@ -1049,7 +1113,7 @@ export default function Portfolio() {
                   </div>
 
                   {/* Description */}
-                  <p style={{ fontSize: 14, color: "#cbd5e1", lineHeight: 1.8, marginBottom: 20, fontWeight: 300 }}>
+                  <p style={{ fontSize: 14.5, color: "#f1f5f9", lineHeight: 1.8, marginBottom: 20, fontWeight: 450, textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>
                     {p.desc}
                   </p>
 
@@ -1068,7 +1132,7 @@ export default function Portfolio() {
                           border: "1px solid rgba(56, 189, 248, 0.25)",
                         }}
                       >
-                        ✦ {s}
+                        {s}
                       </span>
                     ))}
                   </div>
@@ -1180,11 +1244,11 @@ export default function Portfolio() {
                       {year}
                     </div>
                     <div style={{ fontSize: 16.5, fontWeight: 700, color: "#ffffff", marginBottom: 4 }}>{title}</div>
-                    <div style={{ fontSize: 14, color: "#cbd5e1", marginBottom: points.length ? 12 : 0, fontWeight: 300 }}>{org}</div>
+                    <div style={{ fontSize: 14, color: "#e2e8f0", marginBottom: points.length ? 12 : 0, fontWeight: 500 }}>{org}</div>
                     {points.length > 0 && (
                       <ul style={{ paddingLeft: 16, listStyleType: "disc" }}>
                         {points.map((pt) => (
-                          <li key={pt} style={{ color: "#94a3b8", fontSize: 13.5, lineHeight: 1.85, marginBottom: 4, fontWeight: 300 }}>
+                          <li key={pt} style={{ color: "#f1f5f9", fontSize: 14, lineHeight: 1.85, marginBottom: 6, fontWeight: 500, textShadow: "0 1px 6px rgba(0,0,0,0.9)" }}>
                             {pt}
                           </li>
                         ))}
@@ -1281,7 +1345,7 @@ export default function Portfolio() {
                   }}
                 >
                   <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#ff729f", flexShrink: 0, marginTop: 7, boxShadow: "0 0 10px #ff729f" }} />
-                  <p style={{ fontSize: 14, color: "#cbd5e1", lineHeight: 1.75, margin: 0, fontWeight: 300 }}>{a}</p>
+                  <p style={{ fontSize: 14.5, color: "#f1f5f9", lineHeight: 1.75, margin: 0, fontWeight: 500, textShadow: "0 1px 6px rgba(0,0,0,0.9)" }}>{a}</p>
                 </div>
               ))}
             </div>
@@ -1306,82 +1370,13 @@ export default function Portfolio() {
           </h2>
           <div style={{ ...dividerBar, margin: "0 auto 28px" }} />
 
-          <p style={{ color: "#cbd5e1", fontSize: 15.5, lineHeight: 1.85, maxWidth: 540, margin: "0 auto 48px", fontWeight: 300 }}>
+          <p style={{ color: "#f1f5f9", fontSize: 16, lineHeight: 1.85, maxWidth: 540, margin: "0 auto 48px", fontWeight: 500, textShadow: "0 1px 6px rgba(0,0,0,0.9)" }}>
             I'm looking for software development roles where I can actually contribute from day one. If you have something interesting, or just want to talk — feel free to reach out.
           </p>
 
           <ContactGrid />
         </div>
       </section>
-
-      {/* ── 10. PEACHWEB STYLE MINIMAL SITEMAP FOOTER ── */}
-      <footer
-        style={{
-          position: "relative",
-          zIndex: 10,
-          borderTop: "1px solid rgba(255, 255, 255, 0.12)",
-          background: "rgba(2, 11, 22, 0.85)",
-          backdropFilter: "blur(24px)",
-          padding: "60px clamp(1.2rem, 5vw, 3.5rem) 36px",
-        }}
-      >
-        <div style={{ maxWidth: 1160, margin: "0 auto" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 36, marginBottom: 48 }}>
-            {/* Logo and Brand */}
-            <div>
-              <div style={{ display: "flex", alignItems: "center", marginBottom: 12 }}>
-                <span style={{ fontSize: 19, fontWeight: 800, color: "#ffffff" }}>shreya<span style={{ color: "#ff729f" }}>.</span></span>
-              </div>
-              <p style={{ color: "#8493a8", fontSize: 13.5, maxWidth: 300, lineHeight: 1.6 }}>
-                Agentic AI & Full-Stack Developer creating digital experiences with precision & care.
-              </p>
-            </div>
-
-            {/* Sitemap Links matching Peachweb columns (Product, Resources, Use Cases, Plans) */}
-            <div style={{ display: "flex", gap: "clamp(24px, 5vw, 56px)", flexWrap: "wrap" }}>
-              <div>
-                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.75)", textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: 14 }}>Navigation</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  {NAV_LINKS.slice(0, 3).map((n) => (
-                    <span key={n} onClick={() => scrollTo(n)} style={{ color: "#cbd5e1", fontSize: 13, cursor: "pointer", transition: "color 0.2s" }} onMouseOver={(e) => { e.currentTarget.style.color = "#ff9ebb"; }} onMouseOut={(e) => { e.currentTarget.style.color = "#cbd5e1"; }}>
-                      {n}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.75)", textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: 14 }}>Explore</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  {NAV_LINKS.slice(3).map((n) => (
-                    <span key={n} onClick={() => scrollTo(n)} style={{ color: "#cbd5e1", fontSize: 13, cursor: "pointer", transition: "color 0.2s" }} onMouseOver={(e) => { e.currentTarget.style.color = "#ff9ebb"; }} onMouseOut={(e) => { e.currentTarget.style.color = "#cbd5e1"; }}>
-                      {n}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.75)", textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: 14 }}>Connect</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  <a href="https://github.com/thecodesofshreya07" target="_blank" rel="noopener noreferrer" style={{ color: "#cbd5e1", fontSize: 13, textDecoration: "none" }}>GitHub ↗</a>
-                  <a href="https://www.linkedin.com/in/shreya-mishra-55157a31a/" target="_blank" rel="noopener noreferrer" style={{ color: "#cbd5e1", fontSize: 13, textDecoration: "none" }}>LinkedIn ↗</a>
-                  <a href="mailto:sm8054800@gmail.com" style={{ color: "#cbd5e1", fontSize: 13, textDecoration: "none" }}>Email ↗</a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: 24, flexWrap: "wrap", gap: 14, color: "#64748b", fontSize: 12.5 }}>
-            <div>Shreya Mishra © {new Date().getFullYear()} · All rights reserved</div>
-            <div style={{ display: "flex", gap: 16 }}>
-              <span>B.E. Computer Engineering</span>
-              <span>•</span>
-              <span>CGPA 9.5</span>
-            </div>
-          </div>
-        </div>
-      </footer>
 
       {/* ── Scroll To Top Floating Button ── */}
       <ScrollTopBtn scrolled={scrolled} />

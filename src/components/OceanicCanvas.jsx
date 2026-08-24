@@ -19,17 +19,17 @@ export default function OceanicCanvas() {
     };
     window.addEventListener("resize", handleResize);
 
-    // Light, delicate translucent bubbles that don't obscure text or background art
-    const bubbleCount = 24;
+    // Rich, vibrant, glossy oceanic bubbles
+    const bubbleCount = 28;
     const bubbles = Array.from({ length: bubbleCount }, () => ({
       x: Math.random() * width,
       y: Math.random() * height + height * 0.1,
-      radius: Math.random() * 20 + 8, // 8px to 28px radius
-      speedY: Math.random() * 0.6 + 0.2,
+      radius: Math.random() * 24 + 10, // 10px to 34px radius
+      speedY: Math.random() * 0.65 + 0.25,
       wobbleSpeed: Math.random() * 0.016 + 0.008,
-      wobbleDist: Math.random() * 24 + 8,
+      wobbleDist: Math.random() * 24 + 10,
       wobbleOffset: Math.random() * Math.PI * 2,
-      opacity: Math.random() * 0.14 + 0.08,
+      opacity: Math.random() * 0.35 + 0.45, // Rich, bright, prominent
       hue: Math.random() > 0.4 ? "cyan" : "peach",
     }));
 
@@ -39,7 +39,7 @@ export default function OceanicCanvas() {
       time += 0.018;
       ctx.clearRect(0, 0, width, height);
 
-      // Floating light translucent bubbles
+      // Floating vibrant, glossy bubbles
       bubbles.forEach((b) => {
         b.y -= b.speedY;
         const currentX = b.x + Math.sin(time * b.wobbleSpeed * 60 + b.wobbleOffset) * (b.wobbleDist * 0.08);
@@ -54,33 +54,33 @@ export default function OceanicCanvas() {
 
         const isCyan = b.hue === "cyan";
         const rimColor = isCyan ? "rgba(56, 189, 248, " : "rgba(255, 114, 159, ";
-        const innerColor = isCyan ? "rgba(3, 30, 60, " : "rgba(45, 12, 35, ";
+        const innerColor = isCyan ? "rgba(3, 30, 60, " : "rgba(55, 15, 42, ";
 
-        // Soft bubble gradient
+        // Glossy bubble radial gradient
         const grad = ctx.createRadialGradient(
           -b.radius * 0.3,
           -b.radius * 0.3,
-          b.radius * 0.1,
+          b.radius * 0.08,
           0,
           0,
           b.radius
         );
-        grad.addColorStop(0, "rgba(255, 255, 255, " + b.opacity * 0.3 + ")");
-        grad.addColorStop(0.4, innerColor + b.opacity * 0.08 + ")");
-        grad.addColorStop(0.85, rimColor + b.opacity * 0.45 + ")");
-        grad.addColorStop(1, rimColor + b.opacity * 0.65 + ")");
+        grad.addColorStop(0, "rgba(255, 255, 255, " + Math.min(1, b.opacity * 0.75) + ")");
+        grad.addColorStop(0.35, innerColor + b.opacity * 0.25 + ")");
+        grad.addColorStop(0.8, rimColor + b.opacity * 0.75 + ")");
+        grad.addColorStop(1, rimColor + b.opacity + ")");
 
         ctx.beginPath();
         ctx.arc(0, 0, b.radius, 0, Math.PI * 2);
         ctx.fillStyle = grad;
         ctx.fill();
 
-        // Delicate Bubble Rim
-        ctx.strokeStyle = rimColor + b.opacity * 0.5 + ")";
-        ctx.lineWidth = 1;
+        // Vivid Bubble Rim
+        ctx.strokeStyle = rimColor + Math.min(1, b.opacity * 0.9) + ")";
+        ctx.lineWidth = 1.4;
         ctx.stroke();
 
-        // Specular Crescent
+        // Specular Highlight
         ctx.beginPath();
         ctx.ellipse(
           -b.radius * 0.38,
@@ -91,7 +91,7 @@ export default function OceanicCanvas() {
           0,
           Math.PI * 2
         );
-        ctx.fillStyle = "rgba(255, 255, 255, " + b.opacity * 0.6 + ")";
+        ctx.fillStyle = "rgba(255, 255, 255, " + Math.min(1, b.opacity * 0.9) + ")";
         ctx.fill();
 
         ctx.restore();

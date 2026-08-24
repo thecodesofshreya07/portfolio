@@ -1,14 +1,14 @@
 import React, { useEffect, useRef } from "react";
 
 export default function OceanicCanvas() {
-  const canvasRef = useRef(null);
+  const bubblesCanvasRef = useRef(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
+    const canvas = bubblesCanvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
 
-    let animationFrameId;
+    let animId;
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
@@ -19,73 +19,89 @@ export default function OceanicCanvas() {
     };
     window.addEventListener("resize", handleResize);
 
-    // Subtle luminescent floating spores / deep sea bubbles
-    const spores = Array.from({ length: 45 }, () => ({
+    // Light, delicate translucent bubbles that don't obscure text or background art
+    const bubbleCount = 24;
+    const bubbles = Array.from({ length: bubbleCount }, () => ({
       x: Math.random() * width,
-      y: Math.random() * height,
-      size: Math.random() * 2.5 + 0.8,
-      speedY: Math.random() * 0.4 + 0.15,
-      speedX: (Math.random() - 0.5) * 0.2,
-      wobbleSpeed: Math.random() * 0.02 + 0.01,
+      y: Math.random() * height + height * 0.1,
+      radius: Math.random() * 20 + 8, // 8px to 28px radius
+      speedY: Math.random() * 0.6 + 0.2,
+      wobbleSpeed: Math.random() * 0.016 + 0.008,
+      wobbleDist: Math.random() * 24 + 8,
       wobbleOffset: Math.random() * Math.PI * 2,
-      opacity: Math.random() * 0.4 + 0.15,
-      color: Math.random() > 0.4 ? "rgba(255, 158, 187, " : "rgba(56, 189, 248, ",
+      opacity: Math.random() * 0.14 + 0.08,
+      hue: Math.random() > 0.4 ? "cyan" : "peach",
     }));
 
     let time = 0;
-
     function render() {
-      time += 0.015;
+      animId = requestAnimationFrame(render);
+      time += 0.018;
       ctx.clearRect(0, 0, width, height);
 
-      // ─── Subtle Volumetric Light Rays (God-rays) ──────────────────────
-      ctx.save();
-      ctx.globalCompositeOperation = "screen";
-      for (let i = 0; i < 3; i++) {
-        const xOffset = width * (0.2 + i * 0.3) + Math.sin(time * 0.4 + i) * 60;
-        const rayGrad = ctx.createLinearGradient(xOffset, 0, xOffset + 80, height * 0.7);
-        rayGrad.addColorStop(0, "rgba(80, 210, 255, 0.08)");
-        rayGrad.addColorStop(0.5, "rgba(255, 140, 180, 0.03)");
-        rayGrad.addColorStop(1, "transparent");
+      // Floating light translucent bubbles
+      bubbles.forEach((b) => {
+        b.y -= b.speedY;
+        const currentX = b.x + Math.sin(time * b.wobbleSpeed * 60 + b.wobbleOffset) * (b.wobbleDist * 0.08);
 
-        ctx.fillStyle = rayGrad;
-        ctx.beginPath();
-        ctx.moveTo(xOffset - 40, 0);
-        ctx.lineTo(xOffset + 120, 0);
-        ctx.lineTo(xOffset + 240, height);
-        ctx.lineTo(xOffset + 40, height);
-        ctx.closePath();
-        ctx.fill();
-      }
-      ctx.restore();
-
-      // ─── Floating Ethereal Spores & Bubbles ───────────────────────────
-      spores.forEach((s) => {
-        s.y -= s.speedY;
-        s.x += Math.sin(time + s.wobbleOffset) * 0.35 + s.speedX;
-
-        if (s.y < -10) {
-          s.y = height + 10;
-          s.x = Math.random() * width;
+        if (b.y < -b.radius * 2) {
+          b.y = height + b.radius * 2;
+          b.x = Math.random() * width;
         }
 
         ctx.save();
+        ctx.translate(currentX, b.y);
+
+        const isCyan = b.hue === "cyan";
+        const rimColor = isCyan ? "rgba(56, 189, 248, " : "rgba(255, 114, 159, ";
+        const innerColor = isCyan ? "rgba(3, 30, 60, " : "rgba(45, 12, 35, ";
+
+        // Soft bubble gradient
+        const grad = ctx.createRadialGradient(
+          -b.radius * 0.3,
+          -b.radius * 0.3,
+          b.radius * 0.1,
+          0,
+          0,
+          b.radius
+        );
+        grad.addColorStop(0, "rgba(255, 255, 255, " + b.opacity * 0.3 + ")");
+        grad.addColorStop(0.4, innerColor + b.opacity * 0.08 + ")");
+        grad.addColorStop(0.85, rimColor + b.opacity * 0.45 + ")");
+        grad.addColorStop(1, rimColor + b.opacity * 0.65 + ")");
+
         ctx.beginPath();
-        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-        ctx.fillStyle = s.color + s.opacity + ")";
-        ctx.shadowColor = s.color + "0.8)";
-        ctx.shadowBlur = 6;
+        ctx.arc(0, 0, b.radius, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
         ctx.fill();
+
+        // Delicate Bubble Rim
+        ctx.strokeStyle = rimColor + b.opacity * 0.5 + ")";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Specular Crescent
+        ctx.beginPath();
+        ctx.ellipse(
+          -b.radius * 0.38,
+          -b.radius * 0.38,
+          b.radius * 0.32,
+          b.radius * 0.16,
+          -Math.PI / 4,
+          0,
+          Math.PI * 2
+        );
+        ctx.fillStyle = "rgba(255, 255, 255, " + b.opacity * 0.6 + ")";
+        ctx.fill();
+
         ctx.restore();
       });
-
-      animationFrameId = requestAnimationFrame(render);
     }
 
     render();
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      cancelAnimationFrame(animId);
       window.removeEventListener("resize", handleResize);
     };
   }, []);
@@ -101,40 +117,43 @@ export default function OceanicCanvas() {
         zIndex: 0,
         pointerEvents: "none",
         overflow: "hidden",
+        backgroundColor: "#020b16",
       }}
     >
-      {/* High-Resolution Photorealistic 3D Ocean Background */}
+      {/* High-Resolution Deep Oceanic Background Texture */}
       <div
         style={{
           position: "absolute",
-          inset: "-20px",
+          inset: "-10px",
           backgroundImage: "url('/peachweb-ocean-bg.jpg')",
           backgroundSize: "cover",
-          backgroundPosition: "center 20%",
-          filter: "brightness(0.92) contrast(1.05)",
-          transform: "scale(1.02)",
+          backgroundPosition: "center 22%",
+          filter: "brightness(0.82) contrast(1.15) saturate(1.2)",
+          transform: "scale(1.01)",
+          opacity: 0.95,
         }}
       />
 
-      {/* Atmospheric Vignette & Depth Gradient */}
+      {/* Balanced Contrast Scrim (Octopus stays clearly visible, text becomes razor-sharp) */}
       <div
         style={{
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(to bottom, rgba(5, 23, 44, 0.35) 0%, rgba(3, 16, 32, 0.5) 45%, rgba(2, 10, 20, 0.88) 85%, #020b16 100%)",
+            "radial-gradient(circle at 50% 30%, rgba(3, 16, 32, 0.28) 0%, rgba(2, 11, 22, 0.58) 55%, rgba(2, 11, 22, 0.88) 100%)",
         }}
       />
 
-      {/* Subtle Caustic Canvas Layer */}
+      {/* Light Translucent Deep-Sea Bubbles Canvas */}
       <canvas
-        ref={canvasRef}
+        ref={bubblesCanvasRef}
         style={{
           position: "absolute",
           top: 0,
           left: 0,
           width: "100%",
           height: "100%",
+          zIndex: 2,
         }}
       />
     </div>

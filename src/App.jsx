@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import OceanicCanvas from "./components/OceanicCanvas";
+import OceanicDataNode from "./components/OceanicDataNode";
 
 const NAV_LINKS = ["Home", "About", "Skills", "Projects", "Experience", "Contact"];
 
 const SKILLS = {
   "Agentic AI & LLMs": ["Autonomous Agents", "Tool & Function Calling", "Groq", "Gemini API", "RAG Systems", "Model Context Protocol (MCP)"],
   Languages: ["Python", "JavaScript", "Java", "C"],
-  Frontend: ["React.js", "HTML5", "CSS3", "Tailwind CSS", "Framer Motion", "Recharts"],
+  Frontend: ["React.js", "Three.js", "WebGL Shaders", "HTML5", "CSS3", "Tailwind CSS", "Framer Motion", "Recharts"],
+  "Creative Tech & Graphics": ["Three.js", "WebGL Shaders", "Math/Trigonometric Animations", "Interactive Cursor Physics", "Canvas 2D API"],
   "Backend & Tools": ["Node.js", "Express.js", "RESTful APIs", "Server-Sent Events (SSE)", "JWT Auth", "Git", "GitHub", "Vercel", "Render"],
   Databases: ["PostgreSQL", "MongoDB", "SQL", "Schema Design"],
   "CS Fundamentals": ["DSA", "DBMS", "Operating Systems", "OOP"],
@@ -19,7 +21,7 @@ const PROJECTS = [
     subtitle: "AI Construction Operations & Agentic Site Management",
     tags: ["React 19", "Node.js", "PostgreSQL", "Groq / Llama 3.3", "Gemini API", "Agentic Tools", "MCP", "SSE", "Tailwind CSS"],
     desc: "Enterprise multi-site construction operations platform combining real-time telemetry with autonomous LLM agents. Features multi-step tool-calling agents for automated root-cause analysis (RCA), dynamic stockout depletion balancing, 72-hour multimodal photo milestone predictions, 6-stage procurement pipeline tracking, and Model Context Protocol (MCP) server integration.",
-    stats: ["Agentic AI", "Tool Calling", "RAG & MCP", "Real-Time SSE", "Live App"],
+    stats: ["🏆 2nd Place · CODEISSANCE '26", "Agentic AI", "Tool Calling", "RAG & MCP", "Real-Time SSE", "Live App"],
     link: "https://github.com/thecodesofshreya07/sitesync",
     live: "https://site-sync-fawn.vercel.app/",
     color: "#38bdf8",
@@ -125,8 +127,8 @@ const EXPERIENCE = [
 ];
 
 const ACHIEVEMENTS = [
-  "3rd Place — MOSAIC National Level UI/UX Hackathon, RAIT D.Y. Patil (50+ teams)",
-  "JEE Mains 93.17 percentile · MHT-CET 98.713 percentile — top 2% of 800,000+ candidates",
+  "2nd Place — CODEISSANCE 2026 (24-Hour Hackathon)",
+  "3rd Place — MOSAIC National Level UI/UX Hackathon, RAIT D.Y. Patil"
 ];
 
 const LEARNING_TRACKS = [
@@ -371,10 +373,69 @@ function CurrentlyLearning() {
   );
 }
 
+// ─── Scroll To Top Button (Frosted Oceanic Glass) ────────────────────────────
+function ScrollTopBtn({ scrolled }) {
+  return (
+    <button
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      title="Back to top"
+      aria-label="Back to top"
+      style={{
+        position: "fixed",
+        bottom: 28,
+        right: 28,
+        zIndex: 999,
+        width: 46,
+        height: 46,
+        borderRadius: "50%",
+        background: "rgba(8, 28, 52, 0.78)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        border: "1px solid rgba(56, 189, 248, 0.45)",
+        boxShadow: "0 8px 32px rgba(0, 0, 0, 0.55), 0 0 20px rgba(56, 189, 248, 0.28)",
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "#38bdf8",
+        opacity: scrolled ? 1 : 0,
+        pointerEvents: scrolled ? "auto" : "none",
+        transform: scrolled ? "scale(1) translateY(0)" : "scale(0.8) translateY(18px)",
+        transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translateY(-4px) scale(1.08)";
+        e.currentTarget.style.borderColor = "#ff729f";
+        e.currentTarget.style.color = "#ff729f";
+        e.currentTarget.style.boxShadow = "0 12px 36px rgba(0,0,0,0.6), 0 0 24px rgba(255, 114, 159, 0.45)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = scrolled ? "scale(1) translateY(0)" : "scale(0.8) translateY(18px)";
+        e.currentTarget.style.borderColor = "rgba(56, 189, 248, 0.45)";
+        e.currentTarget.style.color = "#38bdf8";
+        e.currentTarget.style.boxShadow = "0 8px 32px rgba(0, 0, 0, 0.55), 0 0 20px rgba(56, 189, 248, 0.28)";
+      }}
+    >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="18 15 12 9 6 15" />
+      </svg>
+    </button>
+  );
+}
+
 // ─── Main Portfolio App ───────────────────────────────────────────────────────
 export default function Portfolio() {
   const [activeNav, setActiveNav] = useState("Home");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 280);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const typed = useTypewriter([
     "an Agentic AI Developer",
@@ -529,6 +590,7 @@ export default function Portfolio() {
           <a
             href="/Shreya_Mishra_Resume.pdf"
             download
+            className="mobile-compact-btn"
             style={{
               background: "#ffffff",
               color: "#0a2540",
@@ -640,10 +702,9 @@ export default function Portfolio() {
             style={{
               fontSize: "clamp(24px, 3.2vw, 34px)",
               fontWeight: 800,
-              background: "linear-gradient(135deg, #ffffff 40%, #ff9ebb 70%, #ff729f 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              letterSpacing: "-0.04em",
+              color: "#ffffff",
+              letterSpacing: "-0.03em",
+              textShadow: "0 2px 16px rgba(0, 0, 0, 0.9), 0 0 20px rgba(255, 255, 255, 0.25)",
             }}
           >
             shreya mishra
@@ -680,12 +741,13 @@ export default function Portfolio() {
 
         <p
           style={{
-            color: "rgba(255, 255, 255, 0.75)",
-            fontSize: "clamp(14.5px, 1.8vw, 16.5px)",
+            color: "#e2e8f0",
+            fontSize: "clamp(15px, 1.8vw, 17px)",
             maxWidth: 580,
             margin: "0 auto 38px",
             lineHeight: 1.8,
-            fontWeight: 300,
+            fontWeight: 400,
+            textShadow: "0 2px 10px rgba(0, 0, 0, 0.9)",
           }}
         >
           Computer Engineering student · CGPA 9.5 · I love building things that actually work.
@@ -832,7 +894,7 @@ export default function Portfolio() {
               </div>
             </div>
 
-            {/* Info Cards Grid */}
+            {/* Info Cards Grid (Symmetrical 2x2) */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
               {[
                 { label: "Education", val: "B.E. Computer Engg", sub: "2024–Present" },
@@ -864,6 +926,7 @@ export default function Portfolio() {
       {/* ── 6. SKILLS SECTION ── */}
       <section
         id="skills"
+        className="sec-responsive-pad"
         style={{
           padding: "110px 0",
           position: "relative",
@@ -877,7 +940,7 @@ export default function Portfolio() {
           </h2>
           <div style={dividerBar} />
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 20 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 240px), 1fr))", gap: 20 }}>
             {Object.entries(SKILLS).map(([cat, items]) => (
               <div
                 key={cat}
@@ -1090,8 +1153,17 @@ export default function Portfolio() {
           </h2>
           <div style={dividerBar} />
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 52 }}>
-            {/* Experience Timeline */}
+          {/* Top Row: Experience Timeline (Left) + 3D Oceanic Data Mesh Node (Right) */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
+              gap: 48,
+              alignItems: "stretch",
+              marginBottom: 56,
+            }}
+          >
+            {/* Left: Experience Timeline */}
             <div>
               <div style={{ fontSize: 12, fontWeight: 700, color: "#ff9ebb", textTransform: "uppercase", letterSpacing: "0.18em", marginBottom: 30 }}>
                 Experience
@@ -1123,11 +1195,79 @@ export default function Portfolio() {
               ))}
             </div>
 
-            {/* Achievements */}
-            <div>
-              <div style={{ fontSize: 12, fontWeight: 700, color: "#ff9ebb", textTransform: "uppercase", letterSpacing: "0.18em", marginBottom: 30 }}>
-                Achievements
+            {/* Right: Interactive 3D Oceanic Data Node Graphic Card */}
+            <div
+              className="peach-card"
+              style={{
+                borderRadius: 24,
+                padding: "22px 24px",
+                position: "relative",
+                overflow: "hidden",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                minHeight: 490,
+                border: "1px solid rgba(56, 189, 248, 0.25)",
+                background: "radial-gradient(circle at 50% 30%, rgba(10, 38, 70, 0.5) 0%, rgba(4, 18, 36, 0.75) 100%)",
+              }}
+            >
+              {/* Top Philosophy Statement */}
+              <div
+                style={{
+                  borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+                  paddingBottom: 14,
+                  textAlign: "center",
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: "clamp(13px, 1.4vw, 14.5px)",
+                    fontWeight: 700,
+                    color: "#ffffff",
+                    letterSpacing: "-0.01em",
+                    textShadow: "0 2px 10px rgba(0, 0, 0, 0.9)",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  Every node has a purpose. Every connection tells a story.
+                </p>
               </div>
+
+              {/* 3D Three.js Interactive Graphic */}
+              <div style={{ flex: 1, minHeight: 310, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <OceanicDataNode />
+              </div>
+
+              {/* Bottom Philosophy Statement */}
+              <div
+                style={{
+                  borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+                  paddingTop: 14,
+                  textAlign: "center",
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: "clamp(13px, 1.4vw, 14.5px)",
+                    fontWeight: 700,
+                    color: "#ffffff",
+                    letterSpacing: "-0.01em",
+                    textShadow: "0 2px 10px rgba(0, 0, 0, 0.9)",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  What looks like complexity is often just a thousand simple things, connected.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Row: Achievements (Positioned Below Experience) */}
+          <div style={{ marginTop: 8 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "#ff9ebb", textTransform: "uppercase", letterSpacing: "0.18em", marginBottom: 24 }}>
+              Honors & Achievements
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 20 }}>
               {ACHIEVEMENTS.map((a, i) => (
                 <div
                   key={i}
@@ -1136,12 +1276,11 @@ export default function Portfolio() {
                     display: "flex",
                     alignItems: "flex-start",
                     gap: 16,
-                    padding: "20px 24px",
-                    borderRadius: 18,
-                    marginBottom: 16,
+                    padding: "22px 26px",
+                    borderRadius: 20,
                   }}
                 >
-                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#ff729f", flexShrink: 0, marginTop: 7, boxShadow: "0 0 8px #ff729f" }} />
+                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#ff729f", flexShrink: 0, marginTop: 7, boxShadow: "0 0 10px #ff729f" }} />
                   <p style={{ fontSize: 14, color: "#cbd5e1", lineHeight: 1.75, margin: 0, fontWeight: 300 }}>{a}</p>
                 </div>
               ))}
@@ -1153,6 +1292,7 @@ export default function Portfolio() {
       {/* ── 9. CONTACT SECTION ── */}
       <section
         id="contact"
+        className="sec-responsive-pad"
         style={{
           padding: "110px 0",
           position: "relative",
@@ -1242,6 +1382,9 @@ export default function Portfolio() {
           </div>
         </div>
       </footer>
+
+      {/* ── Scroll To Top Floating Button ── */}
+      <ScrollTopBtn scrolled={scrolled} />
     </div>
   );
 }

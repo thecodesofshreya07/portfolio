@@ -705,14 +705,18 @@ export default function Portfolio() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [soundOn, setSoundOn] = useState(false);
-  const [showAudioPrompt, setShowAudioPrompt] = useState(false);
+  const [showAudioPrompt, setShowAudioPrompt] = useState(() => {
+    return !localStorage.getItem("shreya_audio_choice");
+  });
 
   const toggleSound = () => {
     const isNowPlaying = sound.toggleSound();
     setSoundOn(isNowPlaying);
+    localStorage.setItem("shreya_audio_choice", isNowPlaying ? "enabled" : "dismissed");
   };
 
   const handleEnableAudio = () => {
+    localStorage.setItem("shreya_audio_choice", "enabled");
     sound.startBgAudio(true).then(() => {
       setSoundOn(true);
       setShowAudioPrompt(false);
@@ -720,22 +724,21 @@ export default function Portfolio() {
   };
 
   const handleDismissAudio = () => {
+    localStorage.setItem("shreya_audio_choice", "dismissed");
     sound.stopBgAudio();
     setSoundOn(false);
     setShowAudioPrompt(false);
   };
 
   useEffect(() => {
-    // Attempt automatic playback on initial load
-    sound.startBgAudio().then((started) => {
-      if (started) {
-        setSoundOn(true);
-        setShowAudioPrompt(false);
-      } else {
-        // If the browser blocks background audio, ask user explicitly for audio permission
-        setShowAudioPrompt(true);
-      }
-    });
+    const savedChoice = localStorage.getItem("shreya_audio_choice");
+    if (savedChoice === "enabled") {
+      sound.startBgAudio().then((started) => {
+        if (started) {
+          setSoundOn(true);
+        }
+      });
+    }
   }, []);
 
   useEffect(() => {

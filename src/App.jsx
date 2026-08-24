@@ -714,41 +714,16 @@ export default function Portfolio() {
   };
 
   useEffect(() => {
-    let unlocked = false;
-
-    const tryStartAudio = () => {
-      if (unlocked || sound.isExplicitlyMuted) return;
-      sound.startBgAudio().then((res) => {
-        if (res) {
-          unlocked = true;
-          setSoundOn(true);
-          setShowAudioPrompt(false);
-          cleanup();
-        } else {
-          // If the browser blocks background audio, ask user explicitly for audio permission
-          setShowAudioPrompt(true);
-        }
-      });
-    };
-
-    // 1. Attempt immediate autoplay
-    tryStartAudio();
-
-    // 2. Attach unlock listeners across user activation events as fallback
-    const events = ["touchstart", "touchend", "pointerdown", "pointerup", "click", "keydown"];
-    const cleanup = () => {
-      events.forEach((ev) => {
-        window.removeEventListener(ev, tryStartAudio, { capture: true });
-        document.removeEventListener(ev, tryStartAudio, { capture: true });
-      });
-    };
-
-    events.forEach((ev) => {
-      window.addEventListener(ev, tryStartAudio, { capture: true, passive: true });
-      document.addEventListener(ev, tryStartAudio, { capture: true, passive: true });
+    // Attempt automatic playback on initial load
+    sound.startBgAudio().then((started) => {
+      if (started) {
+        setSoundOn(true);
+        setShowAudioPrompt(false);
+      } else {
+        // If the browser blocks background audio, ask user explicitly for audio permission
+        setShowAudioPrompt(true);
+      }
     });
-
-    return cleanup;
   }, []);
 
   useEffect(() => {
@@ -839,6 +814,7 @@ export default function Portfolio() {
         >
           <div
             className="peach-card audio-modal-anim"
+            onClick={(e) => e.stopPropagation()}
             style={{
               maxWidth: 420,
               width: "100%",
@@ -870,15 +846,15 @@ export default function Portfolio() {
             </div>
 
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#38bdf8", marginBottom: 6 }}>
-              Atmospheric Soundscape
+              BELOW THE SURFACE
             </div>
 
             <h3 style={{ fontSize: "clamp(1.25rem, 4vw, 1.45rem)", fontWeight: 800, color: "#ffffff", marginBottom: 10, lineHeight: 1.3 }}>
-              Enable Audio Experience?
+              Listen for what remains unheard.
             </h3>
 
             <p style={{ fontSize: 13.5, color: "#cbd5e1", lineHeight: 1.6, marginBottom: 24 }}>
-              This portfolio features an immersive ambient oceanographic soundscape designed for headphones and speakers.
+              Take a moment.
             </p>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -904,8 +880,7 @@ export default function Portfolio() {
                 onMouseOver={(e) => { e.currentTarget.style.transform = "scale(1.02)"; }}
                 onMouseOut={(e) => { e.currentTarget.style.transform = "scale(1)"; }}
               >
-                <span>🔊</span>
-                <span>Enable Sound & Enter</span>
+                Enter What Lies Beneath
               </button>
 
               <button
@@ -923,7 +898,7 @@ export default function Portfolio() {
                 onMouseOver={(e) => { e.currentTarget.style.color = "#ffffff"; }}
                 onMouseOut={(e) => { e.currentTarget.style.color = "#94a3b8"; }}
               >
-                Continue in Silence
+                Continue in silence
               </button>
             </div>
           </div>

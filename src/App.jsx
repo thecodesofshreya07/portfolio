@@ -692,12 +692,39 @@ export default function Portfolio() {
   const [activeNav, setActiveNav] = useState("Home");
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [soundOn, setSoundOn] = useState(false);
+  const [soundOn, setSoundOn] = useState(true);
 
   const toggleSound = () => {
     const isNowPlaying = sound.toggleSound();
     setSoundOn(isNowPlaying);
   };
+
+  useEffect(() => {
+    // Attempt automatic playback on initial load
+    sound.startBgAudio().then((started) => {
+      if (started) {
+        setSoundOn(true);
+      } else {
+        // If the browser blocks autoplay before user interaction,
+        // start audio on the very first user interaction (click, scroll, touch, keydown)
+        const unlockAudio = () => {
+          if (!sound.isExplicitlyMuted) {
+            sound.startBgAudio().then((res) => {
+              if (res) setSoundOn(true);
+            });
+          }
+          cleanup();
+        };
+
+        const events = ["pointerdown", "click", "touchstart", "keydown", "scroll"];
+        const cleanup = () => {
+          events.forEach((ev) => window.removeEventListener(ev, unlockAudio, { capture: true }));
+        };
+
+        events.forEach((ev) => window.addEventListener(ev, unlockAudio, { capture: true, once: true }));
+      }
+    });
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -873,7 +900,7 @@ export default function Portfolio() {
               <span className={`audio-bar ${soundOn ? "bar-anim-4" : ""}`} style={{ width: 2.5, height: soundOn ? 10 : 8, background: "currentColor", borderRadius: 2 }} />
             </div>
             <span style={{ fontSize: 11, letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              {soundOn ? "Sound ON" : "Sound"}
+              {soundOn ? "Sound ON" : "Sound OFF"}
             </span>
           </button>
 

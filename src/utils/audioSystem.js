@@ -4,7 +4,8 @@ class OceanicAudioSystem {
   constructor() {
     this.bgAudio = null;
     this.ctx = null;
-    this.isMuted = true;
+    this.isMuted = false;
+    this.isExplicitlyMuted = false;
     this.fadeInterval = null;
   }
 
@@ -24,32 +25,53 @@ class OceanicAudioSystem {
     } catch (e) {}
   }
 
+  startBgAudio() {
+    if (this.isExplicitlyMuted) return Promise.resolve(false);
+    this.initBgAudio();
+    this.initWebAudio();
+
+    if (this.ctx && this.ctx.state === "suspended") {
+      this.ctx.resume().catch(() => {});
+    }
+
+    this.isMuted = false;
+
+    return this.bgAudio
+      .play()
+      .then(() => {
+        this.fadeAudio(0.75, 600);
+        return true;
+      })
+      .catch((e) => {
+        // Autoplay may be blocked until user interacts with the page
+        return false;
+      });
+  }
+
+  stopBgAudio() {
+    this.isMuted = true;
+    this.isExplicitlyMuted = true;
+    this.fadeAudio(0, 400, () => {
+      if (this.bgAudio) this.bgAudio.pause();
+    });
+  }
+
   toggleSound() {
     this.initBgAudio();
     this.initWebAudio();
 
     if (this.ctx && this.ctx.state === "suspended") {
-      this.ctx.resume();
+      this.ctx.resume().catch(() => {});
     }
 
-    this.isMuted = !this.isMuted;
-
-    if (!this.isMuted) {
-      this.bgAudio
-        .play()
-        .then(() => {
-          this.fadeAudio(0.75, 600);
-        })
-        .catch((e) => {
-          console.warn("Audio play error:", e);
-        });
+    if (!this.isMuted && this.bgAudio && !this.bgAudio.paused) {
+      this.stopBgAudio();
+      return false;
     } else {
-      this.fadeAudio(0, 400, () => {
-        this.bgAudio.pause();
-      });
+      this.isExplicitlyMuted = false;
+      this.startBgAudio();
+      return true;
     }
-
-    return !this.isMuted;
   }
 
   fadeAudio(targetVol, durationMs, onComplete) {

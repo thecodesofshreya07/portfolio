@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
+import OceanicCanvas from "./components/OceanicCanvas";
 
 const NAV_LINKS = ["Home", "About", "Skills", "Projects", "Experience", "Contact"];
 
 const SKILLS = {
-  "Agentic AI & LLMs": ["Autonomous Agents", "Tool & Function Calling", "Groq (Llama 3.3)", "Gemini API", "RAG Systems", "Model Context Protocol (MCP)"],
+  "Agentic AI & LLMs": ["Autonomous Agents", "Tool & Function Calling", "Groq", "Gemini API", "RAG Systems", "Model Context Protocol (MCP)"],
   Languages: ["Python", "JavaScript", "Java", "C"],
   Frontend: ["React.js", "HTML5", "CSS3", "Tailwind CSS", "Framer Motion", "Recharts"],
   "Backend & Tools": ["Node.js", "Express.js", "RESTful APIs", "Server-Sent Events (SSE)", "JWT Auth", "Git", "GitHub", "Vercel", "Render"],
@@ -21,7 +22,7 @@ const PROJECTS = [
     stats: ["Agentic AI", "Tool Calling", "RAG & MCP", "Real-Time SSE", "Live App"],
     link: "https://github.com/thecodesofshreya07/sitesync",
     live: "https://site-sync-fawn.vercel.app/",
-    color: "#06b6d4",
+    color: "#38bdf8",
   },
   {
     name: "Artello",
@@ -31,7 +32,7 @@ const PROJECTS = [
     stats: ["Canvas Drawing", "Real-Time", "Creative Tool"],
     link: "https://github.com/thecodesofshreya07/artello",
     live: "https://artello.vercel.app/",
-    color: "#ec4899",
+    color: "#ff729f",
   },
   {
     name: "Fix It Fast",
@@ -41,7 +42,7 @@ const PROJECTS = [
     stats: ["10+ APIs", "25+ Components", "Role-Based UI"],
     link: "https://github.com/thecodesofshreya07/FixItFast",
     live: "https://fix-it-fast-iota.vercel.app/",
-    color: "#ff6b35",
+    color: "#ff9ebb",
   },
   {
     name: "Itihas",
@@ -51,7 +52,7 @@ const PROJECTS = [
     stats: ["Many Locations", "Sub-2s Load", "Timeline Routing", "Quiz & Reports"],
     link: "https://github.com/thecodesofshreya07/ITIHAS",
     live: "https://itihas-one.vercel.app/",
-    color: "#7c3aed",
+    color: "#c084fc",
   },
   {
     name: "Campus Navigator",
@@ -61,7 +62,7 @@ const PROJECTS = [
     stats: ["IIT Bombay", "12+ Buildings", "Sub-1.5s Query", "Live Routes"],
     link: "https://github.com/thecodesofshreya07/smart-move",
     live: "https://tricoded-webies.vercel.app/",
-    color: "#0ea5e9",
+    color: "#38e8d8",
   },
   {
     name: "SkillSea",
@@ -71,7 +72,7 @@ const PROJECTS = [
     stats: ["Multi-Category", "Peer-to-Peer", "Frontend", "Live"],
     link: "https://github.com/thecodesofshreya07/SkillSea",
     live: "https://skill-sea.vercel.app/",
-    color: "#10b981",
+    color: "#4ef2d2",
   },
   {
     name: "FlavourHunt",
@@ -81,7 +82,7 @@ const PROJECTS = [
     stats: ["Search & Filter", "Category Browse", "Frontend"],
     link: "https://github.com/thecodesofshreya07/FlavourHunt",
     live: "https://thecodesofshreya07.github.io/FlavourHunt/",
-    color: "#f59e0b",
+    color: "#fcd34d",
   },
   {
     name: "Marvel Universe",
@@ -91,7 +92,7 @@ const PROJECTS = [
     stats: ["Cinematic UI", "Framer Motion", "Frontend"],
     link: "https://github.com/thecodesofshreya07/marvel",
     live: "https://marvel-black.vercel.app/",
-    color: "#e11d48",
+    color: "#f43f5e",
   },
 ];
 
@@ -128,146 +129,10 @@ const ACHIEVEMENTS = [
   "JEE Mains 93.17 percentile · MHT-CET 98.713 percentile — top 2% of 800,000+ candidates",
 ];
 
-// ─── Typewriter ───────────────────────────────────────────────────────────────
-function useTypewriter(words, speed = 80, pause = 1800) {
-  const [display, setDisplay] = useState("");
-  const [wordIdx, setWordIdx] = useState(0);
-  const [charIdx, setCharIdx] = useState(0);
-  const [deleting, setDeleting] = useState(false);
-  useEffect(() => {
-    const current = words[wordIdx];
-    const timeout = setTimeout(() => {
-      if (!deleting) {
-        setDisplay(current.slice(0, charIdx + 1));
-        if (charIdx + 1 === current.length) setTimeout(() => setDeleting(true), pause);
-        else setCharIdx(c => c + 1);
-      } else {
-        setDisplay(current.slice(0, charIdx - 1));
-        if (charIdx === 0) { setDeleting(false); setWordIdx(w => (w + 1) % words.length); }
-        else setCharIdx(c => c - 1);
-      }
-    }, deleting ? speed / 2 : speed);
-    return () => clearTimeout(timeout);
-  }, [charIdx, deleting, wordIdx, words, speed, pause]);
-  return display;
-}
-
-// ─── Particles ────────────────────────────────────────────────────────────────
-function Particles({ dark }) {
-  const canvasRef = useRef(null);
-  const darkRef = useRef(dark);
-  useEffect(() => { darkRef.current = dark; }, [dark]);
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
-    resize();
-    window.addEventListener("resize", resize);
-    const pts = Array.from({ length: 70 }, () => ({
-      x: Math.random() * canvas.width, y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() - 0.5) * 0.35,
-    }));
-    let raf;
-    function draw() {
-      const ctx = canvas.getContext("2d");
-      const isDark = darkRef.current;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const dotColor = isDark ? "rgba(167,139,250,0.5)" : "rgba(59,70,180,0.65)";
-      const lineBase = isDark ? "rgba(124,58,237," : "rgba(59,70,180,";
-      pts.forEach(p => {
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-        ctx.beginPath(); ctx.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
-        ctx.fillStyle = dotColor; ctx.fill();
-      });
-      for (let i = 0; i < pts.length; i++) {
-        for (let j = i + 1; j < pts.length; j++) {
-          const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
-            ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y);
-            ctx.strokeStyle = lineBase + (0.16 * (1 - dist / 120)).toFixed(3) + ")";
-            ctx.lineWidth = 0.7; ctx.stroke();
-          }
-        }
-      }
-      raf = requestAnimationFrame(draw);
-    }
-    draw();
-    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
-  }, []);
-  return <canvas ref={canvasRef} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }} />;
-}
-
-
-// ─── ScrollTopBtn ─────────────────────────────────────────────────────────────
-function ScrollTopBtn({ T, scrolled }) {
-  return scrolled ? (
-    <button
-      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      title="Back to top"
-      style={{
-        position: "fixed", bottom: 28, right: 28, zIndex: 300,
-        width: 44, height: 44, borderRadius: "50%",
-        background: T.btnPrimary, border: "none", cursor: "pointer",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        boxShadow: "0 4px 20px rgba(0,0,0,0.18)",
-        transition: "all 0.2s",
-      }}
-      onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.filter = "brightness(1.15)"; }}
-      onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.filter = ""; }}
-    >
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="18 15 12 9 6 15" />
-      </svg>
-    </button>
-  ) : null;
-}
-
-// ─── ContactGrid ──────────────────────────────────────────────────────────────
-function ContactGrid({ T }) {
-  const [copied, setCopied] = React.useState(false);
-  const copyEmail = () => {
-    navigator.clipboard.writeText("sm8054800@gmail.com").then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
-  };
-  return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14, maxWidth: 640, margin: "0 auto" }}>
-      {/* Email card with copy */}
-      <div className="contact-card"
-        style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "28px 14px", background: T.bgCard, border: `1px solid ${T.cardBorder}`, borderRadius: 12, cursor: "default", position: "relative" }}
-        onMouseEnter={e => { e.currentTarget.style.borderColor = T.accent + "55"; e.currentTarget.style.background = T.pillBg; }}
-        onMouseLeave={e => { e.currentTarget.style.borderColor = T.cardBorder; e.currentTarget.style.background = T.bgCard; }}>
-        <span style={{ fontSize: 10, color: T.textMuted, textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: 8, fontWeight: 600 }}>Email</span>
-        <a href="mailto:sm8054800@gmail.com" style={{ fontSize: 12.5, color: T.accent, fontWeight: 600, wordBreak: "break-all", lineHeight: 1.5, cursor: "pointer" }}>sm8054800@gmail.com</a>
-        <button onClick={copyEmail} title="Copy email" style={{ marginTop: 10, background: "transparent", border: `1px solid ${T.cardBorder}`, borderRadius: 6, padding: "4px 10px", fontSize: 11, color: copied ? T.accent : T.textMuted, cursor: "pointer", fontFamily: "'DM Sans',sans-serif", fontWeight: 500, transition: "all 0.2s" }}>
-          {copied ? "✓ Copied!" : "Copy"}
-        </button>
-      </div>
-      {[
-        { label: "GitHub", val: "thecodesofshreya07", href: "https://github.com/thecodesofshreya07" },
-        { label: "LinkedIn", val: "Shreya Mishra", href: "https://www.linkedin.com/in/shreya-mishra-55157a31a/" },
-      ].map(({ label, val, href }) => (
-        <a key={label} href={href} target="_blank" rel="noopener noreferrer" className="contact-card"
-          style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "28px 14px", background: T.bgCard, border: `1px solid ${T.cardBorder}`, borderRadius: 12, color: T.text, cursor: "pointer" }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = T.accent + "55"; e.currentTarget.style.background = T.pillBg; }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = T.cardBorder; e.currentTarget.style.background = T.bgCard; }}>
-          <span style={{ fontSize: 10, color: T.textMuted, textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: 8, fontWeight: 600 }}>{label}</span>
-          <span style={{ fontSize: 12.5, color: T.accent, fontWeight: 600, wordBreak: "break-all", lineHeight: 1.5 }}>{val}</span>
-        </a>
-      ))}
-    </div>
-  );
-}
-
-// ─── CurrentlyLearning ────────────────────────────────────────────────────────
 const LEARNING_TRACKS = [
   {
     category: "Frontend Expansion",
-    color: "#3178c6",
+    color: "#38bdf8",
     icon: "⬡",
     items: [
       { name: "TypeScript", progress: 32, note: "Type systems, generics, utility types" },
@@ -276,16 +141,139 @@ const LEARNING_TRACKS = [
   },
   {
     category: "Backend & Infrastructure",
-    color: "#06b6d4",
+    color: "#4ef2d2",
     icon: "⬡",
     items: [
-      { name: "Docker & Containerization", progress: 45, note: "Images, volumes, docker-compose" },
+      { name: "Docker & Containerization", progress: 45, note: "Images, docker-compose" },
       { name: "Redis & Caching", progress: 100, note: "Cache strategies, TTL patterns" },
       { name: "Rate Limiting", progress: 88 },
     ],
   },
 ];
 
+// ─── Typewriter ───────────────────────────────────────────────────────────────
+function useTypewriter(words, speed = 80, pause = 1800) {
+  const [display, setDisplay] = useState("");
+  const [wordIdx, setWordIdx] = useState(0);
+  const [charIdx, setCharIdx] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const current = words[wordIdx];
+    const timeout = setTimeout(
+      () => {
+        if (!deleting) {
+          setDisplay(current.slice(0, charIdx + 1));
+          if (charIdx + 1 === current.length) setTimeout(() => setDeleting(true), pause);
+          else setCharIdx((c) => c + 1);
+        } else {
+          setDisplay(current.slice(0, charIdx - 1));
+          if (charIdx === 0) {
+            setDeleting(false);
+            setWordIdx((w) => (w + 1) % words.length);
+          } else setCharIdx((c) => c - 1);
+        }
+      },
+      deleting ? speed / 2 : speed
+    );
+    return () => clearTimeout(timeout);
+  }, [charIdx, deleting, wordIdx, words, speed, pause]);
+
+  return display;
+}
+
+// ─── Contact Grid with Copy ───────────────────────────────────────────────────
+function ContactGrid() {
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = () => {
+    navigator.clipboard.writeText("sm8054800@gmail.com").then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16, maxWidth: 760, margin: "0 auto" }}>
+      {/* Email Card */}
+      <div
+        className="peach-card"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: "32px 20px",
+          borderRadius: 20,
+          cursor: "default",
+          position: "relative",
+        }}
+      >
+        <span style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: "0.16em", marginBottom: 10, fontWeight: 700 }}>
+          Email Address
+        </span>
+        <a
+          href="mailto:sm8054800@gmail.com"
+          style={{ fontSize: 14, color: "#ff9ebb", fontWeight: 600, wordBreak: "break-all", lineHeight: 1.5, textDecoration: "none" }}
+        >
+          sm8054800@gmail.com
+        </a>
+        <button
+          onClick={copyEmail}
+          title="Copy email"
+          style={{
+            marginTop: 16,
+            background: "rgba(255, 255, 255, 0.12)",
+            border: "1px solid rgba(255, 255, 255, 0.22)",
+            borderRadius: 99,
+            padding: "6px 18px",
+            fontSize: 12,
+            color: copied ? "#4ef2d2" : "#ffffff",
+            cursor: "pointer",
+            fontWeight: 600,
+            transition: "all 0.2s",
+          }}
+        >
+          {copied ? "✓ Copied to clipboard!" : "Copy Email"}
+        </button>
+      </div>
+
+      {[
+        { label: "GitHub Profile", val: "thecodesofshreya07", href: "https://github.com/thecodesofshreya07" },
+        { label: "LinkedIn Profile", val: "Shreya Mishra", href: "https://www.linkedin.com/in/shreya-mishra-55157a31a/" },
+      ].map(({ label, val, href }) => (
+        <a
+          key={label}
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="peach-card"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            padding: "32px 20px",
+            borderRadius: 20,
+            color: "#ffffff",
+            cursor: "pointer",
+            textDecoration: "none",
+          }}
+        >
+          <span style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: "0.16em", marginBottom: 10, fontWeight: 700 }}>
+            {label}
+          </span>
+          <span style={{ fontSize: 14, color: "#38bdf8", fontWeight: 600, wordBreak: "break-all", lineHeight: 1.5 }}>
+            {val}
+          </span>
+          <span style={{ marginTop: 16, fontSize: 12, color: "rgba(255,255,255,0.7)", display: "flex", alignItems: "center", gap: 4 }}>
+            Open Link ↗
+          </span>
+        </a>
+      ))}
+    </div>
+  );
+}
+
+// ─── Currently Learning Tracks ────────────────────────────────────────────────
 function LearningBar({ progress, color, animate }) {
   const [width, setWidth] = useState(0);
   useEffect(() => {
@@ -294,93 +282,84 @@ function LearningBar({ progress, color, animate }) {
       return () => clearTimeout(t);
     }
   }, [animate, progress]);
+
   return (
-    <div style={{ height: 5, borderRadius: 99, background: "rgba(128,128,128,0.13)", overflow: "hidden", flex: 1 }}>
-      <div style={{
-        height: "100%", borderRadius: 99,
-        background: `linear-gradient(90deg, ${color}, ${color}bb)`,
-        width: `${width}%`,
-        transition: "width 1.1s cubic-bezier(0.22,1,0.36,1)",
-        boxShadow: `0 0 8px ${color}55`,
-      }} />
+    <div style={{ height: 6, borderRadius: 99, background: "rgba(255,255,255,0.08)", overflow: "hidden", flex: 1 }}>
+      <div
+        style={{
+          height: "100%",
+          borderRadius: 99,
+          background: `linear-gradient(90deg, ${color}, #ff729f)`,
+          width: `${width}%`,
+          transition: "width 1.2s cubic-bezier(0.22, 1, 0.36, 1)",
+          boxShadow: `0 0 10px ${color}88`,
+        }}
+      />
     </div>
   );
 }
 
-function CurrentlyLearning({ T, dark }) {
+function CurrentlyLearning() {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
+
   useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true); }, { threshold: 0.2 });
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) setVisible(true);
+    }, { threshold: 0.2 });
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
   }, []);
 
   return (
-    <div ref={ref} style={{ marginTop: 40 }}>
-      <style>{`
-        @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
-        @keyframes scanline { 0%{transform:translateX(-100%)} 100%{transform:translateX(400%)} }
-        .learn-card:hover .learn-scanline { animation: scanline 1.4s ease forwards; }
-        .learn-item { transition: background 0.2s; }
-        .learn-item:hover { background: rgba(128,128,128,0.06) !important; }
-      `}</style>
-
-      {/* Header row */}
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
-        <div style={{ fontSize: 10.5, fontWeight: 700, color: T.accent, textTransform: "uppercase", letterSpacing: "0.14em" }}>
+    <div ref={ref} style={{ marginTop: 52 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
+        <div style={{ fontSize: 11.5, fontWeight: 700, color: "#ff9ebb", textTransform: "uppercase", letterSpacing: "0.18em" }}>
           Currently Learning
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "3px 10px", borderRadius: 99, background: dark ? "rgba(34,197,94,0.1)" : "rgba(22,163,74,0.08)", border: `1px solid ${dark ? "rgba(34,197,94,0.25)" : "rgba(22,163,74,0.2)"}` }}>
-          <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#22c55e", animation: "pulse-dot 1.8s ease-in-out infinite" }} />
-          <span style={{ fontSize: 10.5, fontWeight: 600, color: "#22c55e", letterSpacing: "0.06em" }}>Active</span>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "3px 14px", borderRadius: 99, background: "rgba(78, 242, 210, 0.15)", border: "1px solid rgba(78, 242, 210, 0.35)" }}>
+          <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ef2d2", boxShadow: "0 0 8px #4ef2d2" }} />
+          <span style={{ fontSize: 11, fontWeight: 700, color: "#4ef2d2", letterSpacing: "0.08em", textTransform: "uppercase" }}>Active</span>
         </div>
       </div>
 
-      {/* Tagline */}
-      <p style={{ fontSize: 13.5, color: T.textSub, lineHeight: 1.8, fontWeight: 300, maxWidth: 600, marginBottom: 24 }}>
+      <p style={{ fontSize: 14.5, color: "#cbd5e1", lineHeight: 1.8, fontWeight: 300, maxWidth: 660, marginBottom: 28 }}>
         Always picking up something new. Expanding into large-scale frontend architecture with{" "}
-        <span style={{ color: T.text, fontWeight: 500 }}>TypeScript</span> &{" "}
-        <span style={{ color: T.text, fontWeight: 500 }}>Angular</span>, and going deep on backend infrastructure —{" "}
-        <span style={{ color: T.text, fontWeight: 500 }}>Docker</span>, <span style={{ color: T.text, fontWeight: 500 }}>Redis</span>, <span style={{ color: T.text, fontWeight: 500 }}>rate limiting</span>, and the whole ecosystem.
+        <span style={{ color: "#ffffff", fontWeight: 600 }}>TypeScript</span> &{" "}
+        <span style={{ color: "#ffffff", fontWeight: 600 }}>Angular</span>, and going deep on backend infrastructure —{" "}
+        <span style={{ color: "#ffffff", fontWeight: 600 }}>Docker</span>, <span style={{ color: "#ffffff", fontWeight: 600 }}>Redis</span>, <span style={{ color: "#ffffff", fontWeight: 600 }}>rate limiting</span>, and the whole ecosystem.
       </p>
 
-      {/* Track cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 16 }}>
-        {LEARNING_TRACKS.map(track => (
-          <div key={track.category} className="learn-card" style={{
-            background: T.bgCard, border: `1px solid ${T.cardBorder}`,
-            borderRadius: 14, padding: "20px 22px", position: "relative", overflow: "hidden",
-          }}>
-            {/* Scanline shimmer on hover */}
-            <div className="learn-scanline" style={{
-              position: "absolute", top: 0, left: 0, width: "25%", height: "100%",
-              background: `linear-gradient(90deg, transparent, ${track.color}18, transparent)`,
-              pointerEvents: "none",
-            }} />
-
-            {/* Top accent line */}
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${track.color}, ${track.color}00)`, borderRadius: "14px 14px 0 0" }} />
-
-            {/* Category header */}
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 18 }}>
-              <div style={{ width: 28, height: 28, borderRadius: 8, background: track.color + "1a", border: `1px solid ${track.color}30`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, color: track.color }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 20 }}>
+        {LEARNING_TRACKS.map((track) => (
+          <div
+            key={track.category}
+            className="peach-card"
+            style={{
+              borderRadius: 20,
+              padding: "24px 26px",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${track.color}, #ff729f)` }} />
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+              <div style={{ width: 32, height: 32, borderRadius: 10, background: track.color + "25", border: `1px solid ${track.color}50`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, color: track.color }}>
                 {track.icon}
               </div>
-              <span style={{ fontSize: 12, fontWeight: 600, color: T.text, letterSpacing: "0.02em" }}>{track.category}</span>
+              <span style={{ fontSize: 14, fontWeight: 700, color: "#ffffff", letterSpacing: "0.02em" }}>{track.category}</span>
             </div>
 
-            {/* Items */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-              {track.items.map(item => (
-                <div key={item.name} className="learn-item" style={{ borderRadius: 8, padding: "10px 12px", background: "transparent" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 7 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              {track.items.map((item) => (
+                <div key={item.name} style={{ borderRadius: 12, padding: "10px 14px", background: "rgba(255,255,255,0.04)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
                     <LearningBar progress={item.progress} color={track.color} animate={visible} />
-                    <span style={{ fontSize: 11, fontWeight: 700, color: track.color, minWidth: 32, textAlign: "right" }}>{item.progress}%</span>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: track.color, minWidth: 36, textAlign: "right" }}>{item.progress}%</span>
                   </div>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8 }}>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: T.text }}>{item.name}</span>
-                    <span style={{ fontSize: 11, color: T.textMuted, fontWeight: 300, textAlign: "right", flexShrink: 0, maxWidth: 160 }}>{item.note}</span>
+                    <span style={{ fontSize: 13.5, fontWeight: 600, color: "#ffffff" }}>{item.name}</span>
+                    <span style={{ fontSize: 11.5, color: "#94a3b8", fontWeight: 300, textAlign: "right", flexShrink: 0, maxWidth: 180 }}>{item.note}</span>
                   </div>
                 </div>
               ))}
@@ -392,510 +371,877 @@ function CurrentlyLearning({ T, dark }) {
   );
 }
 
-// ─── Portfolio ────────────────────────────────────────────────────────────────
+// ─── Main Portfolio App ───────────────────────────────────────────────────────
 export default function Portfolio() {
-  const [dark, setDark] = useState(false);
-  const [active, setActive] = useState("Home");
+  const [activeNav, setActiveNav] = useState("Home");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const typed = useTypewriter(["an Agentic AI & Full-Stack Developer", "a React.js Specialist", "a Backend Enthusiast", "an Aspiring SDE", "a Problem Solver"]);
 
-  const T = dark ? {
-    bg: "#09090e", bgAlt: "#0c0c14", bgCard: "rgba(255,255,255,0.035)",
-    text: "#ede9fe", textSub: "#a1a1aa", textMuted: "#52525b",
-    accent: "#a78bfa", accentDark: "#7c3aed",
-    navBg: "rgba(9,9,14,0.9)", navBorder: "rgba(124,58,237,0.15)",
-    cardBorder: "rgba(124,58,237,0.14)", pillBg: "rgba(167,139,250,0.1)",
-    pillColor: "#a78bfa", pillBorder: "rgba(167,139,250,0.25)",
-    heroSub: "#c4b5fd",
-    btnPrimary: "linear-gradient(135deg,#7c3aed,#4f46e5)", btnPrimaryColor: "#fff",
-    btnSecBorder: "rgba(167,139,250,0.5)", btnSecColor: "#a78bfa",
-    statVal: "#a78bfa",
-    divider: "linear-gradient(90deg,#7c3aed,#4f46e5,#818cf8)",
-    sectionTitle: "#ede9fe",
-    toggleBg: "#18103a", toggleBorder: "#3b1d8a", toggleKnob: "#a78bfa",
-    heroBg: "#09090e",
-    tagBg: c => c + "15", tagBorder: c => c + "40",
-    statBg: "rgba(124,58,237,0.1)",
-  } : {
-    bg: "#f5f5f0", bgAlt: "#ffffff", bgCard: "#ffffff",
-    text: "#0f172a", textSub: "#4b5563", textMuted: "#9ca3af",
-    accent: "#f97316", accentDark: "#ea580c",
-    navBg: "rgba(255,255,255,0.96)", navBorder: "rgba(0,0,0,0.07)",
-    cardBorder: "rgba(0,0,0,0.08)", pillBg: "rgba(249,115,22,0.07)",
-    pillColor: "#ea580c", pillBorder: "rgba(249,115,22,0.22)",
-    heroSub: "#1e293b",
-    btnPrimary: "linear-gradient(135deg,#1e3a5f,#1d4ed8)", btnPrimaryColor: "#fff",
-    btnSecBorder: "#1e3a5f", btnSecColor: "#1e3a5f",
-    statVal: "#ea580c",
-    divider: "linear-gradient(90deg,#f97316,#ea580c)",
-    sectionTitle: "#0f172a",
-    toggleBg: "#e2e8f0", toggleBorder: "#cbd5e1", toggleKnob: "#475569",
-    heroBg: "#f5f5f0",
-    tagBg: c => c + "12", tagBorder: c => c + "38",
-    statBg: "rgba(0,0,0,0.05)",
-  };
+  const typed = useTypewriter([
+    "an Agentic AI Developer",
+    "a Full-Stack Developer",
+    "a React.js Specialist",
+    "a Backend Engineer",
+    "an Aspiring SDE",
+    "a Problem Solver",
+  ]);
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", fn); return () => window.removeEventListener("scroll", fn);
-  }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
-  }, [menuOpen]);
-
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      entries => entries.forEach(e => {
-        if (e.isIntersecting) setActive(e.target.id.charAt(0).toUpperCase() + e.target.id.slice(1));
-      }),
-      { threshold: 0.25, rootMargin: "-60px 0px 0px 0px" }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            setActiveNav(e.target.id.charAt(0).toUpperCase() + e.target.id.slice(1));
+          }
+        });
+      },
+      { threshold: 0.25, rootMargin: "-80px 0px 0px 0px" }
     );
-    NAV_LINKS.forEach(n => { const el = document.getElementById(n.toLowerCase()); if (el) obs.observe(el); });
-    return () => obs.disconnect();
+    NAV_LINKS.forEach((n) => {
+      const el = document.getElementById(n.toLowerCase());
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
   }, []);
 
-  const scrollTo = id => {
+  const scrollTo = (id) => {
     setMenuOpen(false);
     document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const NAV_H = 64;
-
-  const pill = color => ({
-    display: "inline-block", padding: "3px 11px", borderRadius: 20,
-    fontSize: 12, fontWeight: 500, marginRight: 6, marginBottom: 6,
-    background: T.tagBg(color), color, border: `1px solid ${T.tagBorder(color)}`,
-  });
-
-  const defaultPill = {
-    display: "inline-block", padding: "3px 11px", borderRadius: 20,
-    fontSize: 12, fontWeight: 500, marginRight: 6, marginBottom: 6,
-    background: T.pillBg, color: T.pillColor, border: `1px solid ${T.pillBorder}`,
+  const secLabel = {
+    color: "#ff9ebb",
+    fontWeight: 700,
+    textTransform: "uppercase",
+    letterSpacing: "0.22em",
+    fontSize: 12,
+    marginBottom: 10,
   };
 
-  const secLabel = { color: T.accent, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.18em", fontSize: 11, marginBottom: 12 };
-  const secTitle = { fontFamily: "'Playfair Display', serif", fontSize: "clamp(26px,4vw,44px)", fontWeight: 700, color: T.sectionTitle, marginBottom: 12, lineHeight: 1.1 };
-  const dividerBar = { width: 48, height: 2, background: T.divider, borderRadius: 2, marginBottom: 36 };
+  const secTitle = {
+    fontSize: "clamp(30px, 4.5vw, 48px)",
+    fontWeight: 700,
+    color: "#ffffff",
+    marginBottom: 14,
+    lineHeight: 1.15,
+  };
+
+  const dividerBar = {
+    width: 54,
+    height: 3.5,
+    background: "linear-gradient(90deg, #ff729f, #38bdf8)",
+    borderRadius: 99,
+    marginBottom: 44,
+  };
 
   return (
-    <>
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
-      <style>{`
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html, body {
-          width: 100%;
-          margin: 0;
-          padding: 0;
-          overflow-x: hidden;
-          scroll-behavior: smooth;
-          cursor: default;
-        }
-        body { font-family: 'DM Sans', sans-serif; cursor: default; }
-        /* Prevent I-beam cursor on all text/spans unless explicitly overridden */
-        span, p, h1, h2, h3, h4, div { cursor: default; }
-        a { text-decoration: none; cursor: pointer; }
-        button { cursor: pointer; }
+    <div style={{ width: "100%", minHeight: "100vh", position: "relative" }}>
+      {/* ── 1. PHOTOREALISTIC OCEANIC BACKGROUND WITH CAUSTICS & LIGHT RAYS ── */}
+      <OceanicCanvas />
 
-        .nl {
-          position: relative; cursor: pointer; font-size: 13.5px; font-weight: 500;
-          padding: 4px 0; letter-spacing: 0.01em; transition: color 0.2s; white-space: nowrap;
-        }
-        .nl::after {
-          content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
-          height: 1.5px; border-radius: 2px; background: currentColor;
-          transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease;
-        }
-        .nl:hover::after, .nl.act::after { transform: scaleX(1); }
+      {/* ── 2. PEACHWEB FLOATING FROSTED HEADER ── */}
+      <header
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 76,
+          zIndex: 500,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "0 clamp(1.2rem, 4vw, 3.5rem)",
+          background: "linear-gradient(to bottom, rgba(4, 18, 36, 0.7) 0%, rgba(4, 18, 36, 0) 100%)",
+        }}
+      >
+        {/* Left: Clean Brand Logo */}
+        <div
+          onClick={() => scrollTo("Home")}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            cursor: "pointer",
+          }}
+        >
+          <span
+            style={{
+              fontSize: 20,
+              fontWeight: 800,
+              color: "#ffffff",
+              letterSpacing: "-0.4px",
+            }}
+          >
+            shreya<span style={{ color: "#ff729f" }}>.</span>
+          </span>
+        </div>
 
-        .hamburger { display: none !important; }
-        @media (max-width: 768px) {
-          .desktop-nav { display: none !important; }
-          .hamburger { display: flex !important; }
-        }
+        {/* Center: Frosted Glass Pill Navigation */}
+        <nav
+          className="desktop-nav-menu"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            background: "rgba(255, 255, 255, 0.1)",
+            backdropFilter: "blur(24px)",
+            WebkitBackdropFilter: "blur(24px)",
+            padding: "4px 10px",
+            borderRadius: 99,
+            border: "1px solid rgba(255, 255, 255, 0.18)",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.25)",
+          }}
+        >
+          {NAV_LINKS.map((n) => (
+            <span
+              key={n}
+              onClick={() => scrollTo(n)}
+              className={`nav-pill-item ${activeNav === n ? "active" : ""}`}
+            >
+              {n}
+            </span>
+          ))}
+        </nav>
 
-        .page-root {
-          width: 100%;
-          min-height: 100vh;
-          overflow-x: hidden;
-        }
+        {/* Right: Action CTA Buttons */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <button
+            onClick={() => scrollTo("Contact")}
+            style={{
+              background: "rgba(255, 255, 255, 0.1)",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
+              border: "1px solid rgba(255, 255, 255, 0.25)",
+              color: "#ffffff",
+              borderRadius: 99,
+              padding: "8px 18px",
+              fontSize: 13,
+              fontWeight: 600,
+              cursor: "pointer",
+              transition: "all 0.2s ease",
+            }}
+            className="desktop-nav-menu"
+            onMouseOver={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.2)"; }}
+            onMouseOut={(e) => { e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)"; }}
+          >
+            Get in Touch
+          </button>
 
-        .full-section { width: 100%; }
-        .inner {
-          width: 100%;
-          max-width: 1160px;
-          margin: 0 auto;
-          padding: 0 clamp(1.2rem, 4vw, 3.5rem);
-        }
+          <a
+            href="/Shreya_Mishra_Resume.pdf"
+            download
+            style={{
+              background: "#ffffff",
+              color: "#0a2540",
+              borderRadius: 99,
+              padding: "9px 20px",
+              fontSize: 13,
+              fontWeight: 700,
+              textDecoration: "none",
+              boxShadow: "0 0 20px rgba(255, 255, 255, 0.4)",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              transition: "all 0.2s ease",
+              whiteSpace: "nowrap",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = "scale(1.03)";
+              e.currentTarget.style.boxShadow = "0 0 26px rgba(255, 114, 159, 0.6)";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = "none";
+              e.currentTarget.style.boxShadow = "0 0 20px rgba(255, 255, 255, 0.4)";
+            }}
+          >
+            Resume PDF ↗
+          </a>
 
-        .sec-pad { padding: 96px 0; }
-        @media (max-width: 768px) { .sec-pad { padding: 68px 0; } }
-        @media (max-width: 480px) { .sec-pad { padding: 52px 0; } }
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="mobile-hamburger"
+            style={{
+              background: "rgba(255,255,255,0.12)",
+              border: "1px solid rgba(255,255,255,0.25)",
+              borderRadius: 99,
+              color: "#fff",
+              cursor: "pointer",
+              padding: "6px 12px",
+              display: "none",
+            }}
+          >
+            ☰
+          </button>
+        </div>
+      </header>
 
-        .proj-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-          gap: 22px;
-        }
-        @media (max-width: 640px) { .proj-grid { grid-template-columns: 1fr; } }
-
-        .skill-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-          gap: 16px;
-        }
-
-        .about-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 56px;
-          align-items: start;
-        }
-        @media (max-width: 768px) { .about-grid { grid-template-columns: 1fr; gap: 36px; } }
-
-        .info-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-        .exp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
-        @media (max-width: 768px) { .exp-grid { grid-template-columns: 1fr; gap: 40px; } }
-
-        .contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-        @media (max-width: 640px) { .contact-grid { grid-template-columns: 1fr 1fr; } }
-
-        .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-        .hero-stats { display: flex; gap: 44px; justify-content: center; flex-wrap: wrap; margin-top: 56px; }
-
-        .mobile-menu {
-          position: fixed; top: 64px; left: 0; right: 0; bottom: 0;
-          z-index: 199; overflow-y: auto; padding: 1.5rem 2rem 3rem;
-        }
-
-        .proj-card { transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease; }
-        .proj-card:hover { transform: translateY(-5px); }
-        .contact-card { transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease; }
-        .contact-card:hover { transform: translateY(-4px); }
-        .achieve-row { transition: transform 0.2s ease; }
-        .achieve-row:hover { transform: translateX(4px); }
-
-        .t { transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease; }
-
-        /* Theme toggle */
-        .theme-toggle {
-          position: relative; width: 52px; height: 26px; border-radius: 13px;
-          cursor: pointer; border: 1.5px solid; outline: none;
-          transition: all 0.3s;
-        }
-        .toggle-icon {
-          position: absolute; top: 50%; transform: translateY(-50%);
-          font-size: 12px; line-height: 1; transition: opacity 0.25s;
-          display: flex; align-items: center; justify-content: center;
-        }
-        .toggle-knob {
-          position: absolute; top: 2px; width: 18px; height: 18px;
-          border-radius: 50%; transition: left 0.3s cubic-bezier(0.4,0,0.2,1);
-          box-shadow: 0 1px 4px rgba(0,0,0,0.3);
-        }
-      `}</style>
-
-      <div className="page-root t" style={{ background: T.bg, color: T.text }}>
-
-        {/* ── NAVBAR ── */}
-        <header className="t" style={{
-          position: "fixed", top: 0, left: 0, right: 0, zIndex: 200, height: NAV_H,
-          background: scrolled ? T.navBg : "transparent",
-          backdropFilter: scrolled ? "blur(20px)" : "none",
-          WebkitBackdropFilter: scrolled ? "blur(20px)" : "none",
-          borderBottom: `1px solid ${scrolled ? T.navBorder : "transparent"}`,
-          transition: "background 0.3s, border-color 0.3s",
-        }}>
-          <div style={{ width: "100%", maxWidth: 1160, margin: "0 auto", height: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 clamp(1.2rem,4vw,3.5rem)", position: "relative" }}>
-            <div onClick={() => scrollTo("Home")} style={{ fontFamily: "'Playfair Display', serif", fontSize: 21, fontWeight: 700, color: T.accent, cursor: "pointer", flexShrink: 0, letterSpacing: "-0.4px" }}>
-              Shreya<span style={{ opacity: 0.3, color: T.text }}>.</span>
+      {/* Mobile Menu Dropdown */}
+      {menuOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: 84,
+            left: 20,
+            right: 20,
+            zIndex: 490,
+            background: "rgba(8, 28, 52, 0.95)",
+            backdropFilter: "blur(24px)",
+            borderRadius: 20,
+            border: "1px solid rgba(255,255,255,0.2)",
+            padding: "20px",
+            boxShadow: "0 20px 48px rgba(0,0,0,0.5)",
+            display: "flex",
+            flexDirection: "column",
+            gap: 12,
+          }}
+        >
+          {NAV_LINKS.map((n) => (
+            <div
+              key={n}
+              onClick={() => scrollTo(n)}
+              style={{
+                fontSize: 16,
+                fontWeight: 600,
+                color: activeNav === n ? "#ff9ebb" : "#ffffff",
+                padding: "8px 0",
+                borderBottom: "1px solid rgba(255,255,255,0.08)",
+                cursor: "pointer",
+              }}
+            >
+              {n}
             </div>
+          ))}
+        </div>
+      )}
 
-            <nav className="desktop-nav" style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "2.2rem", alignItems: "center" }}>
-              {NAV_LINKS.map(n => (
-                <span key={n} className={`nl${active === n ? " act" : ""}`} onClick={() => scrollTo(n)} style={{ color: active === n ? T.accent : T.textSub }}>{n}</span>
-              ))}
-            </nav>
+      {/* ── 4. HERO SECTION (Exact Peachweb Layout & Typography) ── */}
+      <section
+        id="home"
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          padding: "160px clamp(1.2rem, 5vw, 3rem) 90px",
+          position: "relative",
+          zIndex: 10,
+        }}
+      >
+        {/* Hero Central Name Tag */}
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            marginBottom: 20,
+          }}
+        >
+          <span
+            style={{
+              fontSize: "clamp(24px, 3.2vw, 34px)",
+              fontWeight: 800,
+              background: "linear-gradient(135deg, #ffffff 40%, #ff9ebb 70%, #ff729f 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              letterSpacing: "-0.04em",
+            }}
+          >
+            shreya mishra
+          </span>
+        </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
-              {/* Theme toggle with sun/moon icons */}
-              <button
-                onClick={() => setDark(d => !d)}
-                aria-label="Toggle theme"
-                className="theme-toggle"
-                style={{ background: T.toggleBg, borderColor: T.toggleBorder }}
-              >
-                {/* Sun icon (visible in dark mode → clicking switches to light) */}
-                <span className="toggle-icon" style={{ left: 5, opacity: dark ? 1 : 0 }}>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={T.accent} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" />
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                    <line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" />
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                  </svg>
-                </span>
-                {/* Moon icon (visible in light mode → clicking switches to dark) */}
-                <span className="toggle-icon" style={{ right: 5, opacity: dark ? 0 : 1 }}>
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={T.toggleKnob} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                  </svg>
-                </span>
-                <span className="toggle-knob" style={{ left: dark ? "calc(100% - 21px)" : 2, background: T.toggleKnob }} />
-              </button>
+        {/* Headline */}
+        <h1
+          style={{
+            fontSize: "clamp(44px, 7.5vw, 86px)",
+            fontWeight: 700,
+            lineHeight: 1.06,
+            color: "#ffffff",
+            maxWidth: 960,
+            margin: "0 auto 22px",
+            letterSpacing: "-0.03em",
+          }}
+        >
+          Architecting <span className="serif-italic" style={{ color: "#ff9ebb", textShadow: "0 0 30px rgba(255, 114, 159, 0.7)" }}>intelligent</span> systems today.
+        </h1>
 
-              <button className="hamburger" onClick={() => setMenuOpen(m => !m)} aria-label="Menu" style={{ background: "none", border: "none", cursor: "pointer", display: "flex", flexDirection: "column", gap: 5, padding: 4 }}>
-                {[0, 1, 2].map(i => (
-                  <span key={i} style={{ width: 22, height: 2, borderRadius: 2, background: T.accent, display: "block", transition: "all 0.25s", transform: menuOpen ? (i === 0 ? "rotate(45deg) translate(5px,5px)" : i === 2 ? "rotate(-45deg) translate(5px,-5px)" : "none") : "none", opacity: menuOpen && i === 1 ? 0 : 1 }} />
+        {/* Dynamic Typewriter */}
+        <p
+          style={{
+            fontSize: "clamp(18px, 2.4vw, 24px)",
+            color: "#f1f5f9",
+            fontWeight: 400,
+            marginBottom: 20,
+            minHeight: 36,
+          }}
+        >
+          I am <span style={{ color: "#38bdf8", fontWeight: 700, borderRight: "2px solid #38bdf8", paddingRight: 6 }}>{typed}</span>
+        </p>
+
+        <p
+          style={{
+            color: "rgba(255, 255, 255, 0.75)",
+            fontSize: "clamp(14.5px, 1.8vw, 16.5px)",
+            maxWidth: 580,
+            margin: "0 auto 38px",
+            lineHeight: 1.8,
+            fontWeight: 300,
+          }}
+        >
+          Computer Engineering student · CGPA 9.5 · I love building things that actually work.
+        </p>
+
+        {/* Portfolio Action Buttons */}
+        <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", marginBottom: 54 }}>
+          <button
+            onClick={() => scrollTo("Projects")}
+            style={{
+              padding: "13px 36px",
+              borderRadius: 99,
+              background: "#ffffff",
+              color: "#0a2540",
+              border: "none",
+              fontSize: 14.5,
+              fontWeight: 700,
+              cursor: "pointer",
+              boxShadow: "0 0 24px rgba(255, 255, 255, 0.4)",
+              transition: "all 0.25s ease",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = "translateY(-2px) scale(1.02)";
+              e.currentTarget.style.boxShadow = "0 0 30px rgba(255, 114, 159, 0.65)";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = "none";
+              e.currentTarget.style.boxShadow = "0 0 24px rgba(255, 255, 255, 0.4)";
+            }}
+          >
+            View Projects ↗
+          </button>
+
+          <button
+            onClick={() => scrollTo("Contact")}
+            style={{
+              padding: "13px 32px",
+              borderRadius: 99,
+              background: "rgba(255, 255, 255, 0.12)",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
+              border: "1px solid rgba(255, 255, 255, 0.28)",
+              color: "#ffffff",
+              fontSize: 14.5,
+              fontWeight: 600,
+              cursor: "pointer",
+              transition: "all 0.25s ease",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.background = "rgba(255, 255, 255, 0.22)";
+              e.currentTarget.style.transform = "translateY(-2px)";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.background = "rgba(255, 255, 255, 0.12)";
+              e.currentTarget.style.transform = "none";
+            }}
+          >
+            Get in Touch
+          </button>
+        </div>
+
+        {/* Metrics Row in Frosted Glass Capsules */}
+        <div style={{ display: "flex", gap: "clamp(16px, 3.5vw, 44px)", justifyContent: "center", flexWrap: "wrap" }}>
+          {[
+            { label: "9.5", sub: "CGPA" },
+            { label: "9+", sub: "Projects" },
+            { label: "7+", sub: "Live Apps" },
+          ].map(({ label, sub }) => (
+            <div
+              key={sub}
+              className="peach-card"
+              style={{
+                borderRadius: 20,
+                padding: "16px 28px",
+                textAlign: "center",
+                minWidth: 120,
+              }}
+            >
+              <div style={{ fontSize: "clamp(26px, 3.5vw, 34px)", fontWeight: 800, color: "#38bdf8", letterSpacing: "-0.03em" }}>
+                {label}
+              </div>
+              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", textTransform: "uppercase", letterSpacing: "0.16em", marginTop: 4, fontWeight: 700 }}>
+                {sub}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── 5. ABOUT SECTION ── */}
+      <section
+        id="about"
+        style={{
+          padding: "110px 0",
+          position: "relative",
+          zIndex: 10,
+        }}
+      >
+        <div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 clamp(1.2rem, 4vw, 3.5rem)" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 52, alignItems: "start" }}>
+            <div>
+              <p style={secLabel}>About Me</p>
+              <h2 style={secTitle}>
+                Building things <span className="serif-italic" style={{ color: "#ff9ebb" }}>that matter.</span>
+              </h2>
+              <div style={dividerBar} />
+
+              <p style={{ color: "#cbd5e1", lineHeight: 1.9, fontSize: 15.5, marginBottom: 18, fontWeight: 300 }}>
+                I'm a Computer Engineering student with a CGPA of 9.5, and I genuinely enjoy the process of building things — from designing APIs to making a UI feel just right. I've shipped 7+ full-stack apps that are live and actually used.
+              </p>
+
+              <p style={{ color: "#cbd5e1", lineHeight: 1.9, fontSize: 15.5, marginBottom: 36, fontWeight: 300 }}>
+                Outside of code, I've been part of a national-level CSI committee where I got to lead events, handle sponsorships, and work with people from colleges across the country. I'm someone who follows through — whether that's a deadline, a bug at 2am, or a presentation.
+              </p>
+
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                {[
+                  { label: "GitHub Profile", href: "https://github.com/thecodesofshreya07" },
+                  { label: "LinkedIn Profile", href: "https://www.linkedin.com/in/shreya-mishra-55157a31a/" },
+                  { label: "Direct Email", href: "mailto:sm8054800@gmail.com" },
+                ].map(({ label, href }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      padding: "10px 22px",
+                      borderRadius: 99,
+                      background: "rgba(255, 255, 255, 0.12)",
+                      border: "1px solid rgba(255, 255, 255, 0.22)",
+                      color: "#ffffff",
+                      fontWeight: 600,
+                      fontSize: 13,
+                      textDecoration: "none",
+                      transition: "all 0.2s",
+                    }}
+                    onMouseOver={(e) => { e.currentTarget.style.background = "rgba(255, 114, 159, 0.25)"; }}
+                    onMouseOut={(e) => { e.currentTarget.style.background = "rgba(255, 255, 255, 0.12)"; }}
+                  >
+                    {label} ↗
+                  </a>
                 ))}
-              </button>
+              </div>
             </div>
-          </div>
-        </header>
 
-        {/* Mobile overlay */}
-        {menuOpen && (
-          <div className="mobile-menu t" style={{ background: T.navBg, backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}>
-            <div style={{ borderTop: `1px solid ${T.navBorder}`, paddingTop: "1.5rem" }}>
-              {NAV_LINKS.map(n => (
-                <div key={n} onClick={() => scrollTo(n)} style={{ padding: "14px 0", fontSize: 20, fontWeight: 600, color: active === n ? T.accent : T.text, borderBottom: `1px solid ${T.navBorder}`, cursor: "pointer", transition: "color 0.2s" }}>{n}</div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* ── HERO ── */}
-        <section id="home" className="full-section" style={{ position: "relative", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", background: T.heroBg, paddingTop: NAV_H }}>
-          <Particles dark={dark} />
-          {dark && (
-            <>
-              <div style={{ position: "absolute", top: "18%", left: "6%", width: 380, height: 380, borderRadius: "50%", background: "radial-gradient(circle,rgba(124,58,237,0.1),transparent 70%)", pointerEvents: "none" }} />
-              <div style={{ position: "absolute", bottom: "14%", right: "5%", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle,rgba(79,70,229,0.08),transparent 70%)", pointerEvents: "none" }} />
-            </>
-          )}
-          <div style={{ position: "relative", zIndex: 2, textAlign: "center", width: "100%", padding: "clamp(2rem,6vw,5rem) clamp(1.2rem,4vw,2.5rem)" }}>
-            <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(44px,7.5vw,92px)", fontWeight: 700, lineHeight: 1.04, marginBottom: 16, ...(dark ? { background: "linear-gradient(135deg,#ede9fe 20%,#a78bfa 60%,#7c3aed)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" } : { color: "#0f172a" }) }}>
-              {dark ? "Shreya Mishra" : <>Hi, I'm <span style={{ color: T.accent }}>Shreya</span></>}
-            </h1>
-            <p style={{ fontSize: "clamp(17px,2.4vw,24px)", color: T.heroSub, fontWeight: 400, marginBottom: 32, minHeight: 34, letterSpacing: "-0.01em" }}>
-              I am <span style={{ color: T.accent, borderRight: `2px solid ${T.accent}`, paddingRight: 4, fontWeight: 600 }}>{typed}</span>
-            </p>
-            <p style={{ color: T.textSub, fontSize: "clamp(13px,1.6vw,15px)", maxWidth: 500, margin: "0 auto 36px", lineHeight: 1.85, fontWeight: 300 }}>
-              Computer Engineering student · CGPA 9.5 · I love building things that actually work.
-            </p>
-            <div className="hero-btns">
-              <button onClick={() => scrollTo("Projects")} style={{ padding: "13px 32px", background: T.btnPrimary, color: T.btnPrimaryColor, border: "none", borderRadius: 8, fontWeight: 600, fontSize: 14, cursor: "pointer", transition: "all 0.2s", boxShadow: dark ? "0 0 24px rgba(124,58,237,0.28)" : "0 4px 16px rgba(30,58,95,0.18)", fontFamily: "'DM Sans',sans-serif" }}
-                onMouseEnter={e => { e.target.style.transform = "translateY(-2px)"; e.target.style.filter = "brightness(1.1)"; }}
-                onMouseLeave={e => { e.target.style.transform = ""; e.target.style.filter = ""; }}>
-                View Projects
-              </button>
-              <a href="/Shreya_Mishra_Resume.pdf" download style={{ padding: "12px 32px", background: "transparent", color: T.btnSecColor, border: `1.5px solid ${T.btnSecBorder}`, borderRadius: 8, fontWeight: 600, fontSize: 14, cursor: "pointer", transition: "all 0.2s", fontFamily: "'DM Sans',sans-serif", display: "inline-flex", alignItems: "center", gap: 7, textDecoration: "none" }}
-                onMouseEnter={e => { e.currentTarget.style.background = T.pillBg; }}
-                onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
-                Resume
-              </a>
-              <button onClick={() => scrollTo("Contact")} style={{ padding: "12px 32px", background: "transparent", color: T.btnSecColor, border: `1.5px solid ${T.btnSecBorder}`, borderRadius: 8, fontWeight: 600, fontSize: 14, cursor: "pointer", transition: "all 0.2s", fontFamily: "'DM Sans',sans-serif" }}
-                onMouseEnter={e => { e.target.style.background = T.pillBg; }}
-                onMouseLeave={e => { e.target.style.background = "transparent"; }}>
-                Get in Touch
-              </button>
-            </div>
-            <div className="hero-stats">
-              {[{ label: "9.5", sub: "CGPA" }, { label: "9+", sub: "Projects" }, { label: "7+", sub: "Live Apps" }].map(({ label, sub }) => (
-                <div key={sub} style={{ textAlign: "center" }}>
-                  <div style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(28px,4vw,38px)", fontWeight: 700, color: T.statVal, letterSpacing: "-0.03em" }}>{label}</div>
-                  <div style={{ fontSize: 11, color: T.textMuted, textTransform: "uppercase", letterSpacing: "0.14em", marginTop: 4, fontWeight: 500 }}>{sub}</div>
+            {/* Info Cards Grid */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+              {[
+                { label: "Education", val: "B.E. Computer Engg", sub: "2024–Present" },
+                { label: "Location", val: "Mumbai, India", sub: "Open to remote & on-site" },
+                { label: "CGPA", val: "9.5", sub: "Cumulative (all semesters)" },
+                { label: "Career Goal", val: "Software Developer" },
+              ].map(({ label, val, sub }) => (
+                <div
+                  key={label}
+                  className="peach-card"
+                  style={{
+                    borderRadius: 20,
+                    padding: "26px 20px",
+                    textAlign: "center",
+                  }}
+                >
+                  <div style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: "0.16em", marginBottom: 8, fontWeight: 700 }}>
+                    {label}
+                  </div>
+                  <div style={{ fontWeight: 700, color: "#ffffff", fontSize: 14.5, marginBottom: 4 }}>{val}</div>
+                  {sub && <div style={{ fontSize: 12, color: "#94a3b8", fontWeight: 300 }}>{sub}</div>}
                 </div>
               ))}
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ── ABOUT ── */}
-        <section id="about" className="full-section sec-pad t" style={{ background: T.bgAlt }}>
-          <div className="inner">
-            <div className="about-grid">
-              <div>
-                <p style={secLabel}>About</p>
-                <h2 style={secTitle}>Building things <span style={{ color: T.accent }}>that matter.</span></h2>
-                <div style={dividerBar} />
-                <p style={{ color: T.textSub, lineHeight: 1.9, fontSize: 15, marginBottom: 16, fontWeight: 300 }}>
-                  I'm a Computer Engineering student with a CGPA of 9.5, and I genuinely enjoy the process of building things — from designing APIs to making a UI feel just right. I've shipped 4+ full-stack apps that are live and actually used.
-                </p>
-                <p style={{ color: T.textSub, lineHeight: 1.9, fontSize: 15, marginBottom: 32, fontWeight: 300 }}>
-                  Outside of code, I've been part of a national-level CSI committee where I got to lead events, handle sponsorships, and work with people from colleges across the country. I'm someone who follows through — whether that's a deadline, a bug at 2am, or a presentation.
-                </p>
-                <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                  {[
-                    { label: "GitHub", href: "https://github.com/thecodesofshreya07" },
-                    { label: "LinkedIn", href: "https://www.linkedin.com/in/shreya-mishra-55157a31a/" },
-                    { label: "Email", href: "mailto:sm8054800@gmail.com" },
-                  ].map(({ label, href }) => (
-                    <a key={label} href={href} target="_blank" rel="noopener noreferrer"
-                      style={{ padding: "8px 20px", borderRadius: 7, background: T.pillBg, color: T.pillColor, border: `1px solid ${T.pillBorder}`, fontWeight: 500, fontSize: 13, transition: "all 0.2s" }}
-                      onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; }}
-                      onMouseLeave={e => { e.currentTarget.style.transform = ""; }}>
-                      {label} ↗
-                    </a>
+      {/* ── 6. SKILLS SECTION ── */}
+      <section
+        id="skills"
+        style={{
+          padding: "110px 0",
+          position: "relative",
+          zIndex: 10,
+        }}
+      >
+        <div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 clamp(1.2rem, 4vw, 3.5rem)" }}>
+          <p style={secLabel}>Capabilities</p>
+          <h2 style={secTitle}>
+            Technical <span className="serif-italic" style={{ color: "#38bdf8" }}>Skills</span>
+          </h2>
+          <div style={dividerBar} />
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 20 }}>
+            {Object.entries(SKILLS).map(([cat, items]) => (
+              <div
+                key={cat}
+                className="peach-card"
+                style={{
+                  borderRadius: 20,
+                  padding: "24px",
+                }}
+              >
+                <div style={{ fontSize: 11.5, fontWeight: 700, color: "#ff9ebb", textTransform: "uppercase", letterSpacing: "0.16em", marginBottom: 16 }}>
+                  {cat}
+                </div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                  {items.map((s) => (
+                    <span
+                      key={s}
+                      style={{
+                        display: "inline-block",
+                        padding: "4px 12px",
+                        borderRadius: 99,
+                        fontSize: 12,
+                        fontWeight: 500,
+                        background: "rgba(255, 255, 255, 0.08)",
+                        color: "#ffffff",
+                        border: "1px solid rgba(255, 255, 255, 0.15)",
+                      }}
+                    >
+                      {s}
+                    </span>
                   ))}
                 </div>
               </div>
-              <div className="info-cards">
-                {[
-                  { label: "Education", val: "B.E. Computer Engg", sub: "2024–Present" },
-                  { label: "Location", val: "Mumbai, India", sub: "Open to remote & on-site" },
-                  { label: "CGPA", val: "9.5", sub: "Cumulative (all semesters)" },
-                  { label: "Goal", val: "Software Developer" },
-                ].map(({ label, val, sub }) => (
-                  <div key={label}
-                    style={{ background: T.bgCard, border: `1px solid ${T.cardBorder}`, borderRadius: 12, padding: "20px 16px", textAlign: "center", transition: "border-color 0.25s" }}
-                    onMouseEnter={e => { e.currentTarget.style.borderColor = T.accent + "55"; }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor = T.cardBorder; }}>
-                    <div style={{ fontSize: 10, color: T.textMuted, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 6, fontWeight: 500 }}>{label}</div>
-                    <div style={{ fontWeight: 600, color: T.text, fontSize: 13.5, marginBottom: 3 }}>{val}</div>
-                    <div style={{ fontSize: 11.5, color: T.textSub, fontWeight: 300 }}>{sub}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            ))}
           </div>
-        </section>
 
-        {/* ── SKILLS ── */}
-        <section id="skills" className="full-section sec-pad t" style={{ background: T.bg }}>
-          <div className="inner">
-            <p style={secLabel}>What I Know</p>
-            <h2 style={secTitle}>Technical <span style={{ color: T.accent }}>Skills</span></h2>
-            <div style={dividerBar} />
-            <div className="skill-grid">
-              {Object.entries(SKILLS).map(([cat, items]) => (
-                <div key={cat}
-                  style={{ background: T.bgCard, border: `1px solid ${T.cardBorder}`, borderRadius: 12, padding: "20px", transition: "border-color 0.25s" }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = T.accent + "44"; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = T.cardBorder; }}>
-                  <div style={{ fontSize: 10.5, fontWeight: 700, color: T.accent, textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: 14 }}>{cat}</div>
-                  <div>{items.map(s => <span key={s} style={defaultPill}>{s}</span>)}</div>
+          {/* Currently Learning */}
+          <CurrentlyLearning />
+        </div>
+      </section>
+
+      {/* ── 7. FEATURED PROJECTS SECTION ── */}
+      <section
+        id="projects"
+        style={{
+          padding: "110px 0",
+          position: "relative",
+          zIndex: 10,
+        }}
+      >
+        <div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 clamp(1.2rem, 4vw, 3.5rem)" }}>
+          <p style={secLabel}>What I've Built</p>
+          <h2 style={secTitle}>
+            Featured <span className="serif-italic" style={{ color: "#ff9ebb" }}>Projects</span>
+          </h2>
+          <div style={dividerBar} />
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(330px, 1fr))",
+              gap: 26,
+            }}
+          >
+            {PROJECTS.map((p) => (
+              <div
+                key={p.name}
+                className="peach-card"
+                style={{
+                  borderRadius: 22,
+                  padding: "30px",
+                  position: "relative",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                }}
+              >
+                <div>
+                  {/* Top glowing line */}
+                  <div style={{ width: 40, height: 3.5, background: p.color, borderRadius: 99, marginBottom: 20 }} />
+
+                  <h3 style={{ fontSize: 21, fontWeight: 700, color: "#ffffff", marginBottom: 4, letterSpacing: "-0.01em" }}>
+                    {p.name}
+                  </h3>
+                  <p style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", marginBottom: 16, fontWeight: 400 }}>
+                    {p.subtitle}
+                  </p>
+
+                  {/* Tags */}
+                  <div style={{ marginBottom: 16, display: "flex", flexWrap: "wrap", gap: 5 }}>
+                    {p.tags.map((t) => (
+                      <span
+                        key={t}
+                        style={{
+                          fontSize: 11,
+                          fontWeight: 600,
+                          padding: "3px 10px",
+                          borderRadius: 99,
+                          background: "rgba(255, 255, 255, 0.08)",
+                          color: "#e2e8f0",
+                          border: "1px solid rgba(255, 255, 255, 0.12)",
+                        }}
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Description */}
+                  <p style={{ fontSize: 14, color: "#cbd5e1", lineHeight: 1.8, marginBottom: 20, fontWeight: 300 }}>
+                    {p.desc}
+                  </p>
+
+                  {/* Stats Badges */}
+                  <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 26 }}>
+                    {p.stats.map((s) => (
+                      <span
+                        key={s}
+                        style={{
+                          fontSize: 11,
+                          fontWeight: 700,
+                          padding: "4px 10px",
+                          borderRadius: 8,
+                          background: "rgba(56, 189, 248, 0.12)",
+                          color: "#38bdf8",
+                          border: "1px solid rgba(56, 189, 248, 0.25)",
+                        }}
+                      >
+                        ✦ {s}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              ))}
-            </div>
-            {/* ── CURRENTLY LEARNING ── */}
-            <CurrentlyLearning T={T} dark={dark} />
-          </div>
-        </section>
 
-        {/* ── PROJECTS ── */}
-        <section id="projects" className="full-section sec-pad t" style={{ background: T.bgAlt }}>
-          <div className="inner">
-            <p style={secLabel}>What I've Built</p>
-            <h2 style={secTitle}>Featured <span style={{ color: T.accent }}>Projects</span></h2>
-            <div style={dividerBar} />
-            <div className="proj-grid">
-              {PROJECTS.map(p => (
-                <div key={p.name} className="proj-card"
-                  style={{ background: T.bgCard, border: `1px solid ${dark ? p.color + "28" : T.cardBorder}`, borderRadius: 14, padding: "26px" }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = p.color + "66"; e.currentTarget.style.boxShadow = `0 16px 40px ${p.color}10`; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = dark ? p.color + "28" : T.cardBorder; e.currentTarget.style.boxShadow = ""; }}>
-                  <div style={{ width: 32, height: 3, background: p.color, borderRadius: 2, marginBottom: 18 }} />
-                  <h3 style={{ fontFamily: "'Playfair Display',serif", fontSize: 19, fontWeight: 700, color: T.text, marginBottom: 4 }}>{p.name}</h3>
-                  <p style={{ fontSize: 12, color: T.textMuted, marginBottom: 14, fontWeight: 400 }}>{p.subtitle}</p>
-                  <div style={{ marginBottom: 12 }}>{p.tags.map(t => <span key={t} style={pill(p.color)}>{t}</span>)}</div>
-                  <p style={{ fontSize: 13.5, color: T.textSub, lineHeight: 1.8, marginBottom: 16, fontWeight: 300 }}>{p.desc}</p>
-                  <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 20 }}>
-                    {p.stats.map(s => <span key={s} style={{ fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 6, background: T.statBg, color: T.textSub, border: `1px solid ${T.cardBorder}` }}>{s}</span>)}
-                  </div>
-                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                    <a href={p.link} target="_blank" rel="noopener noreferrer"
-                      style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "7px 16px", borderRadius: 7, background: p.color + "14", color: p.color, border: `1px solid ${p.color}38`, fontSize: 13, fontWeight: 600, transition: "all 0.2s" }}
-                      onMouseEnter={e => { e.currentTarget.style.background = p.color + "24"; }}
-                      onMouseLeave={e => { e.currentTarget.style.background = p.color + "14"; }}>
-                      GitHub ↗
+                {/* Bottom Action Links */}
+                <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                  <a
+                    href={p.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 6,
+                      padding: "8px 18px",
+                      borderRadius: 99,
+                      background: "rgba(255, 255, 255, 0.12)",
+                      border: "1px solid rgba(255, 255, 255, 0.22)",
+                      color: "#ffffff",
+                      fontSize: 13,
+                      fontWeight: 600,
+                      textDecoration: "none",
+                      transition: "all 0.2s",
+                    }}
+                    onMouseOver={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.22)"; }}
+                    onMouseOut={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.12)"; }}
+                  >
+                    GitHub ↗
+                  </a>
+                  {p.live && (
+                    <a
+                      href={p.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 6,
+                        padding: "8px 20px",
+                        borderRadius: 99,
+                        background: "#ffffff",
+                        color: "#0a2540",
+                        fontSize: 13,
+                        fontWeight: 700,
+                        textDecoration: "none",
+                        boxShadow: "0 0 16px rgba(255, 255, 255, 0.35)",
+                        transition: "all 0.2s",
+                      }}
+                      onMouseOver={(e) => {
+                        e.currentTarget.style.transform = "scale(1.03)";
+                        e.currentTarget.style.boxShadow = "0 0 24px rgba(255, 114, 159, 0.6)";
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.transform = "none";
+                        e.currentTarget.style.boxShadow = "0 0 16px rgba(255, 255, 255, 0.35)";
+                      }}
+                    >
+                      Live Demo ↗
                     </a>
-                    {p.live && (
-                      <a href={p.live} target="_blank" rel="noopener noreferrer"
-                        style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "7px 16px", borderRadius: 7, background: "transparent", color: T.textSub, border: `1px solid ${T.cardBorder}`, fontSize: 13, fontWeight: 600, transition: "all 0.2s" }}
-                        onMouseEnter={e => { e.currentTarget.style.background = T.pillBg; e.currentTarget.style.color = p.color; e.currentTarget.style.borderColor = p.color + "44"; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = T.textSub; e.currentTarget.style.borderColor = T.cardBorder; }}>
-                        Live ↗
-                      </a>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 8. EXPERIENCE & ACHIEVEMENTS SECTION ── */}
+      <section
+        id="experience"
+        style={{
+          padding: "110px 0",
+          position: "relative",
+          zIndex: 10,
+        }}
+      >
+        <div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 clamp(1.2rem, 4vw, 3.5rem)" }}>
+          <p style={secLabel}>Journey</p>
+          <h2 style={secTitle}>
+            Experience & <span className="serif-italic" style={{ color: "#38bdf8" }}>Achievements</span>
+          </h2>
+          <div style={dividerBar} />
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 52 }}>
+            {/* Experience Timeline */}
+            <div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: "#ff9ebb", textTransform: "uppercase", letterSpacing: "0.18em", marginBottom: 30 }}>
+                Experience
+              </div>
+
+              {EXPERIENCE.map(({ year, title, org, points }, idx, arr) => (
+                <div key={title} style={{ display: "flex", marginBottom: 0 }}>
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginRight: 20, flexShrink: 0 }}>
+                    <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#38bdf8", marginTop: 4, flexShrink: 0, boxShadow: "0 0 12px #38bdf8" }} />
+                    {idx < arr.length - 1 && <div style={{ flex: 1, width: 2, background: "rgba(56, 189, 248, 0.25)", marginTop: 6, minHeight: 48 }} />}
+                  </div>
+                  <div style={{ paddingBottom: 34 }}>
+                    <div style={{ fontSize: 11, color: "#ff9ebb", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 4 }}>
+                      {year}
+                    </div>
+                    <div style={{ fontSize: 16.5, fontWeight: 700, color: "#ffffff", marginBottom: 4 }}>{title}</div>
+                    <div style={{ fontSize: 14, color: "#cbd5e1", marginBottom: points.length ? 12 : 0, fontWeight: 300 }}>{org}</div>
+                    {points.length > 0 && (
+                      <ul style={{ paddingLeft: 16, listStyleType: "disc" }}>
+                        {points.map((pt) => (
+                          <li key={pt} style={{ color: "#94a3b8", fontSize: 13.5, lineHeight: 1.85, marginBottom: 4, fontWeight: 300 }}>
+                            {pt}
+                          </li>
+                        ))}
+                      </ul>
                     )}
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        </section>
 
-        {/* ── EXPERIENCE ── */}
-        <section id="experience" className="full-section sec-pad t" style={{ background: T.bg }}>
-          <div className="inner">
-            <p style={secLabel}>Journey</p>
-            <h2 style={secTitle}>Experience & <span style={{ color: T.accent }}>Achievements</span></h2>
-            <div style={dividerBar} />
-            <div className="exp-grid">
-              <div>
-                <div style={{ fontSize: 11, fontWeight: 700, color: T.accent, textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: 28 }}>Experience</div>
-                {EXPERIENCE.map(({ year, title, org, points }, idx, arr) => (
-                  <div key={title} style={{ display: "flex", marginBottom: 0 }}>
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginRight: 18, flexShrink: 0 }}>
-                      <div style={{ width: 10, height: 10, borderRadius: "50%", background: T.accent, marginTop: 5, flexShrink: 0, boxShadow: dark ? `0 0 10px ${T.accent}88` : "none" }} />
-                      {idx < arr.length - 1 && <div style={{ flex: 1, width: 1.5, background: T.accent + "30", marginTop: 5, minHeight: 44 }} />}
-                    </div>
-                    <div style={{ paddingBottom: 30 }}>
-                      <div style={{ fontSize: 10.5, color: T.accent, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>{year}</div>
-                      <div style={{ fontSize: 15, fontWeight: 600, color: T.text, marginBottom: 3 }}>{title}</div>
-                      <div style={{ fontSize: 13, color: T.textSub, marginBottom: points.length ? 10 : 0, fontWeight: 300 }}>{org}</div>
-                      {points.length > 0 && (
-                        <ul style={{ paddingLeft: 14, listStyleType: "disc" }}>
-                          {points.map(pt => <li key={pt} style={{ color: T.textSub, fontSize: 13, lineHeight: 1.85, marginBottom: 3, fontWeight: 300 }}>{pt}</li>)}
-                        </ul>
-                      )}
-                    </div>
-                  </div>
-                ))}
+            {/* Achievements */}
+            <div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: "#ff9ebb", textTransform: "uppercase", letterSpacing: "0.18em", marginBottom: 30 }}>
+                Achievements
               </div>
+              {ACHIEVEMENTS.map((a, i) => (
+                <div
+                  key={i}
+                  className="peach-card"
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: 16,
+                    padding: "20px 24px",
+                    borderRadius: 18,
+                    marginBottom: 16,
+                  }}
+                >
+                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#ff729f", flexShrink: 0, marginTop: 7, boxShadow: "0 0 8px #ff729f" }} />
+                  <p style={{ fontSize: 14, color: "#cbd5e1", lineHeight: 1.75, margin: 0, fontWeight: 300 }}>{a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 9. CONTACT SECTION ── */}
+      <section
+        id="contact"
+        style={{
+          padding: "110px 0",
+          position: "relative",
+          zIndex: 10,
+        }}
+      >
+        <div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 clamp(1.2rem, 4vw, 3.5rem)", textAlign: "center" }}>
+          <p style={secLabel}>Let's Connect</p>
+          <h2 style={secTitle}>
+            Get In <span className="serif-italic" style={{ color: "#ff9ebb" }}>Touch</span>
+          </h2>
+          <div style={{ ...dividerBar, margin: "0 auto 28px" }} />
+
+          <p style={{ color: "#cbd5e1", fontSize: 15.5, lineHeight: 1.85, maxWidth: 540, margin: "0 auto 48px", fontWeight: 300 }}>
+            I'm looking for software development roles where I can actually contribute from day one. If you have something interesting, or just want to talk — feel free to reach out.
+          </p>
+
+          <ContactGrid />
+        </div>
+      </section>
+
+      {/* ── 10. PEACHWEB STYLE MINIMAL SITEMAP FOOTER ── */}
+      <footer
+        style={{
+          position: "relative",
+          zIndex: 10,
+          borderTop: "1px solid rgba(255, 255, 255, 0.12)",
+          background: "rgba(2, 11, 22, 0.85)",
+          backdropFilter: "blur(24px)",
+          padding: "60px clamp(1.2rem, 5vw, 3.5rem) 36px",
+        }}
+      >
+        <div style={{ maxWidth: 1160, margin: "0 auto" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 36, marginBottom: 48 }}>
+            {/* Logo and Brand */}
+            <div>
+              <div style={{ display: "flex", alignItems: "center", marginBottom: 12 }}>
+                <span style={{ fontSize: 19, fontWeight: 800, color: "#ffffff" }}>shreya<span style={{ color: "#ff729f" }}>.</span></span>
+              </div>
+              <p style={{ color: "#8493a8", fontSize: 13.5, maxWidth: 300, lineHeight: 1.6 }}>
+                Agentic AI & Full-Stack Developer creating digital experiences with precision & care.
+              </p>
+            </div>
+
+            {/* Sitemap Links matching Peachweb columns (Product, Resources, Use Cases, Plans) */}
+            <div style={{ display: "flex", gap: "clamp(24px, 5vw, 56px)", flexWrap: "wrap" }}>
               <div>
-                <div style={{ fontSize: 11, fontWeight: 700, color: T.accent, textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: 28 }}>Achievements</div>
-                {ACHIEVEMENTS.map((a, i) => (
-                  <div key={i} className="achieve-row"
-                    style={{ display: "flex", alignItems: "flex-start", gap: 14, padding: "16px 18px", background: T.bgCard, border: `1px solid ${T.cardBorder}`, borderRadius: 10, marginBottom: 10 }}
-                    onMouseEnter={e => { e.currentTarget.style.borderColor = T.accent + "44"; }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor = T.cardBorder; }}>
-                    <div style={{ width: 6, height: 6, borderRadius: "50%", background: T.accent, flexShrink: 0, marginTop: 7 }} />
-                    <p style={{ fontSize: 13.5, color: T.textSub, lineHeight: 1.75, margin: 0, fontWeight: 300 }}>{a}</p>
-                  </div>
-                ))}
+                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.75)", textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: 14 }}>Navigation</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  {NAV_LINKS.slice(0, 3).map((n) => (
+                    <span key={n} onClick={() => scrollTo(n)} style={{ color: "#cbd5e1", fontSize: 13, cursor: "pointer", transition: "color 0.2s" }} onMouseOver={(e) => { e.currentTarget.style.color = "#ff9ebb"; }} onMouseOut={(e) => { e.currentTarget.style.color = "#cbd5e1"; }}>
+                      {n}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.75)", textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: 14 }}>Explore</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  {NAV_LINKS.slice(3).map((n) => (
+                    <span key={n} onClick={() => scrollTo(n)} style={{ color: "#cbd5e1", fontSize: 13, cursor: "pointer", transition: "color 0.2s" }} onMouseOver={(e) => { e.currentTarget.style.color = "#ff9ebb"; }} onMouseOut={(e) => { e.currentTarget.style.color = "#cbd5e1"; }}>
+                      {n}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.75)", textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: 14 }}>Connect</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  <a href="https://github.com/thecodesofshreya07" target="_blank" rel="noopener noreferrer" style={{ color: "#cbd5e1", fontSize: 13, textDecoration: "none" }}>GitHub ↗</a>
+                  <a href="https://www.linkedin.com/in/shreya-mishra-55157a31a/" target="_blank" rel="noopener noreferrer" style={{ color: "#cbd5e1", fontSize: 13, textDecoration: "none" }}>LinkedIn ↗</a>
+                  <a href="mailto:sm8054800@gmail.com" style={{ color: "#cbd5e1", fontSize: 13, textDecoration: "none" }}>Email ↗</a>
+                </div>
               </div>
             </div>
           </div>
-        </section>
 
-        {/* ── CONTACT ── */}
-        <section id="contact" className="full-section sec-pad t" style={{ background: T.bgAlt }}>
-          <div className="inner" style={{ textAlign: "center" }}>
-            <p style={secLabel}>Let's Connect</p>
-            <h2 style={secTitle}>Get In <span style={{ color: T.accent }}>Touch</span></h2>
-            <div style={{ ...dividerBar, margin: "0 auto 24px" }} />
-            <p style={{ color: T.textSub, fontSize: 15, lineHeight: 1.85, maxWidth: 500, margin: "0 auto 44px", fontWeight: 300 }}>
-              I'm looking for software development roles where I can actually contribute from day one. If you have something interesting, or just want to talk — feel free to reach out.
-            </p>
-            <ContactGrid T={T} />
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: 24, flexWrap: "wrap", gap: 14, color: "#64748b", fontSize: 12.5 }}>
+            <div>Shreya Mishra © {new Date().getFullYear()} · All rights reserved</div>
+            <div style={{ display: "flex", gap: 16 }}>
+              <span>B.E. Computer Engineering</span>
+              <span>•</span>
+              <span>CGPA 9.5</span>
+            </div>
           </div>
-        </section>
-
-        {/* ── SCROLL TO TOP ── */}
-        <ScrollTopBtn T={T} scrolled={scrolled} />
-
-        {/* ── FOOTER ── */}
-        <footer className="t" style={{ textAlign: "center", padding: "28px 1rem", color: T.textMuted, fontSize: 13, background: T.bg, borderTop: `1px solid ${T.cardBorder}` }}>
-          <p style={{ marginBottom: 4 }}>Designed & built by <span style={{ color: T.accent, fontWeight: 600 }}>Shreya Mishra</span></p>
-          <p>© {new Date().getFullYear()} · All rights reserved</p>
-        </footer>
-
-      </div>
-    </>
+        </div>
+      </footer>
+    </div>
   );
 }

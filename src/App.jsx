@@ -947,7 +947,7 @@ export default function Portfolio() {
                 margin: "0 auto 32px",
               }}
             >
-              This site is built with ambient sound. Turn it on to experience it fully.
+              The eye sees the surface. Sound reveals the depth.
             </div>
 
             <button onClick={handleEnableAudio} className="intro-modal-cta">

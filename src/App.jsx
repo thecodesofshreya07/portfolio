@@ -236,7 +236,7 @@ function ContactGrid() {
             transition: "all 0.2s",
           }}
         >
-          {copied ? "✓ Copied to clipboard!" : "Copy Email"}
+          {copied ? "Copied to clipboard!" : "Copy Email"}
         </button>
       </div>
 
@@ -451,7 +451,6 @@ export default function Portfolio() {
   const typed = useTypewriter([
     "an Agentic AI Developer",
     "a Full-Stack Developer",
-    "a React.js Specialist",
     "a Backend Engineer",
     "an Aspiring SDE",
     "a Problem Solver",

@@ -215,7 +215,9 @@ function ContactGrid() {
           Email Address
         </span>
         <a
-          href="mailto:sm8054800@gmail.com"
+          href="https://mail.google.com/mail/?view=cm&fs=1&to=sm8054800@gmail.com"
+          target="_blank"
+          rel="noopener noreferrer"
           style={{ fontSize: 15, color: "#ffffff", fontWeight: 700, wordBreak: "break-all", lineHeight: 1.5, textDecoration: "none", textShadow: "0 1px 8px rgba(0,0,0,0.8)" }}
         >
           sm8054800@gmail.com
@@ -923,6 +925,10 @@ export default function Portfolio() {
               </p>
 
               <p style={{ color: "#f1f5f9", lineHeight: 1.9, fontSize: 16, marginBottom: 36, fontWeight: 500, textShadow: "0 1px 6px rgba(0,0,0,0.9)" }}>
+                Right now I'm interning as a Full Stack Developer, where I've been trusted to own an entire B2B SaaS platform pretty much solo — backend, database, frontend, testing, all of it. It's the kind of "figure it out yourself" role that's taught me more in a few months than most semesters have.
+              </p>
+
+              <p style={{ color: "#f1f5f9", lineHeight: 1.9, fontSize: 16, marginBottom: 36, fontWeight: 500, textShadow: "0 1px 6px rgba(0,0,0,0.9)" }}>
                 Outside of code, I've been part of a national-level CSI committee where I got to lead events, handle sponsorships, and work with people from colleges across the country. I'm someone who follows through — whether that's a deadline, a bug at 2am, or a presentation.
               </p>
 
@@ -930,7 +936,7 @@ export default function Portfolio() {
                 {[
                   { label: "GitHub Profile", href: "https://github.com/thecodesofshreya07" },
                   { label: "LinkedIn Profile", href: "https://www.linkedin.com/in/shreya-mishra-55157a31a/" },
-                  { label: "Direct Email", href: "mailto:sm8054800@gmail.com" },
+                  { label: "Direct Email", href: "https://mail.google.com/mail/?view=cm&fs=1&to=sm8054800@gmail.com" },
                 ].map(({ label, href }) => (
                   <a
                     key={label}

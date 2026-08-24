@@ -1375,9 +1375,17 @@ export default function Portfolio() {
           </h2>
           <div style={{ ...dividerBar, margin: "0 auto 28px" }} />
 
-          <p style={{ color: "#f1f5f9", fontSize: 16, lineHeight: 1.85, maxWidth: 540, margin: "0 auto 48px", fontWeight: 500, textShadow: "0 1px 6px rgba(0,0,0,0.9)" }}>
-            I'm looking for software development roles where I can actually contribute from day one. If you have something interesting, or just want to talk — feel free to reach out.
-          </p>
+          <div style={{ maxWidth: 680, margin: "0 auto 48px", color: "#f1f5f9", fontSize: 16, lineHeight: 1.85, fontWeight: 500, textShadow: "0 1px 6px rgba(0,0,0,0.9)" }}>
+            <p style={{ marginBottom: 16 }}>
+              I’m currently exploring software development opportunities where I can contribute from day one, solve meaningful problems, and create real value for the team and the product.
+            </p>
+            <p style={{ marginBottom: 16 }}>
+              I’m looking to join a collaborative, growth-oriented team where I can apply my technical skills, take ownership of challenging tasks, and continuously learn while delivering high-quality solutions.
+            </p>
+            <p>
+              If you’re hiring for a software development role, know of an opportunity that could be a good fit, or simply want to connect and exchange ideas, I’d be happy to hear from you. Please feel free to reach out!
+            </p>
+          </div>
 
           <ContactGrid />
         </div>
